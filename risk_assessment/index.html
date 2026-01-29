@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment & Mitigation Matrix | Canadian Restoration Visa</title>
+    <meta name="description" content="Comprehensive risk identification, assessment, and mitigation framework">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --danger: #dc3545;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--danger) 0%, #c82333 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .breadcrumb { font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .breadcrumb a { color: white; text-decoration: underline; }
+
+        main { max-width: 1400px; margin: 2rem auto; padding: 0 2rem 4rem; }
+
+        .section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: 150px repeat(5, 1fr);
+            gap: 1px;
+            background: #ddd;
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .matrix-cell {
+            padding: 1.5rem;
+            background: white;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .matrix-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .matrix-label {
+            background: var(--background);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .risk-critical { background: #f8d7da; color: #721c24; }
+        .risk-high { background: #fff3cd; color: #856404; }
+        .risk-medium { background: #d1ecf1; color: #0c5460; }
+        .risk-low { background: #d4edda; color: #155724; }
+
+        .risk-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .risk-card {
+            background: white;
+            border: 3px solid var(--danger);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(220, 53, 69, 0.2);
+        }
+
+        .risk-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--danger);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .level-critical { background: #f8d7da; color: #721c24; }
+        .level-high { background: #fff3cd; color: #856404; }
+        .level-medium { background: #d1ecf1; color: #0c5460; }
+
+        .mitigation-list {
+            background: var(--background);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .mitigation-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background: white;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success);
+        }
+
+        .mitigation-item::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .monitoring-framework {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 2px solid var(--success);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .safeguard-panel {
+            background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);
+            border: 3px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .incident-response {
+            background: white;
+            border: 2px solid var(--danger);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .response-step {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background: var(--background);
+            margin: 0.8rem 0;
+            border-radius: 6px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 61, 98, 0.3);
+        }
+
+        footer {
+            background: var(--danger);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 968px) {
+            .risk-cards { grid-template-columns: 1fr; }
+            .risk-matrix { grid-template-columns: 100px repeat(5, 1fr); font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / Risk Assessment & Mitigation
+            </div>
+            <h1>⚠️ Risk Assessment & Mitigation Matrix</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">Comprehensive vulnerability analysis, safeguard protocols, and incident response framework</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Risk Assessment Matrix -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Risk Impact & Likelihood Matrix</h2>
+            <p style="margin-bottom: 1.5rem;">Visual assessment of risks by impact severity and probability of occurrence. Critical risks (red) require immediate mitigation before program launch.</p>
+
+            <div class="risk-matrix">
+                <div class="matrix-cell matrix-header"></div>
+                <div class="matrix-cell matrix-header">Rare<br>(&lt;5%)</div>
+                <div class="matrix-cell matrix-header">Unlikely<br>(5-25%)</div>
+                <div class="matrix-cell matrix-header">Possible<br>(25-50%)</div>
+                <div class="matrix-cell matrix-header">Likely<br>(50-75%)</div>
+                <div class="matrix-cell matrix-header">Almost Certain<br>(&gt;75%)</div>
+
+                <div class="matrix-cell matrix-label">Catastrophic</div>
+                <div class="matrix-cell risk-high">High</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+
+                <div class="matrix-cell matrix-label">Major</div>
+                <div class="matrix-cell risk-medium">Medium</div>
+                <div class="matrix-cell risk-high">High</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+
+                <div class="matrix-cell matrix-label">Moderate</div>
+                <div class="matrix-cell risk-low">Low</div>
+                <div class="matrix-cell risk-medium">Medium</div>
+                <div class="matrix-cell risk-high">High</div>
+                <div class="matrix-cell risk-high">High</div>
+                <div class="matrix-cell risk-critical">CRITICAL</div>
+
+                <div class="matrix-cell matrix-label">Minor</div>
+                <div class="matrix-cell risk-low">Low</div>
+                <div class="matrix-cell risk-low">Low</div>
+                <div class="matrix-cell risk-medium">Medium</div>
+                <div class="matrix-cell risk-medium">Medium</div>
+                <div class="matrix-cell risk-high">High</div>
+
+                <div class="matrix-cell matrix-label">Negligible</div>
+                <div class="matrix-cell risk-low">Low</div>
+                <div class="matrix-cell risk-low">Low</div>
+                <div class="matrix-cell risk-low">Low</div>
+                <div class="matrix-cell risk-medium">Medium</div>
+                <div class="matrix-cell risk-medium">Medium</div>
+            </div>
+        </div>
+
+        <!-- Priority Risk Categories -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Critical Risk Categories & Mitigation Strategies</h2>
+            
+            <div class="risk-cards">
+                <div class="risk-card">
+                    <div class="risk-title">
+                        ⚠️ Worker Exploitation
+                        <span class="risk-level level-critical">CRITICAL</span>
+                    </div>
+                    <p style="margin: 1rem 0;"><strong>Threat:</strong> Employers paying below minimum wage, unsafe working conditions, coerced overtime, passport confiscation, housing exploitation, barriers to quitting.</p>
+                    <p style="margin: 1rem 0;"><strong>Impact:</strong> Human rights violations, program reputation damage, TFWP comparisons, legal liability.</p>
+                    <p style="margin: 1rem 0;"><strong>Likelihood:</strong> Medium (25-50%) without safeguards, based on TFWP abuse patterns.</p>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-title">
+                        🚫 Immigration Fraud
+                        <span class="risk-level level-high">HIGH</span>
+                    </div>
+                    <p style="margin: 1rem 0;"><strong>Threat:</strong> False credentials, fake job offers, ghost employers, credential mills, sham marriages, consultant fraud.</p>
+                    <p style="margin: 1rem 0;"><strong>Impact:</strong> Program integrity undermined, genuine applicants crowded out, security concerns.</p>
+                    <p style="margin: 1rem 0;"><strong>Likelihood:</strong> Possible (25-50%) - all immigration programs face fraud attempts.</p>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-title">
+                        🌿 Greenwashing
+                        <span class="risk-level level-high">HIGH</span>
+                    </div>
+                    <p style="margin: 1rem 0;"><strong>Threat:</strong> Projects claiming restoration without ecological outcomes, "restorationwashing" to access labor, superficial plantings without ecosystem recovery.</p>
+                    <p style="margin: 1rem 0;"><strong>Impact:</strong> Program fails to achieve environmental goals, public cynicism, funding misuse.</p>
+                    <p style="margin: 1rem 0;"><strong>Likelihood:</strong> Possible (25-50%) without rigorous verification.</p>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-title">
+                        🪶 Indigenous Rights Violations
+                        <span class="risk-level level-critical">CRITICAL</span>
+                    </div>
+                    <p style="margin: 1rem 0;"><strong>Threat:</strong> Projects proceeding without FPIC, OCAP® violations, inadequate benefit-sharing, cultural insensitivity, undermining Guardian programs.</p>
+                    <p style="margin: 1rem 0;"><strong>Impact:</strong> UNDRIP breach, international condemnation, program shutdown, legal action.</p>
+                    <p style="margin: 1rem 0;"><strong>Likelihood:</strong> Possible (25-50%) without mandatory protocols and enforcement.</p>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-title">
+                        🏛️ Political Reversal
+                        <span class="risk-level level-medium">MEDIUM</span>
+                    </div>
+                    <p style="margin: 1rem 0;"><strong>Threat:</strong> Federal election policy change, provincial non-participation, anti-immigration sentiment, budget cuts.</p>
+                    <p style="margin: 1rem 0;"><strong>Impact:</strong> Program cancellation, worker uncertainty, failed restoration projects.</p>
+                    <p style="margin: 1rem 0;"><strong>Likelihood:</strong> Possible (25-50%) - immigration policy subject to electoral cycles.</p>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-title">
+                        🌡️ Climate Change Impacts
+                        <span class="risk-level level-medium">MEDIUM</span>
+                    </div>
+                    <p style="margin: 1rem 0;"><strong>Threat:</strong> Extreme weather destroys restoration work, wildfire smoke health impacts, drought/flooding disrupts projects, species shifts undermine planning.</p>
+                    <p style="margin: 1rem 0;"><strong>Impact:</strong> Restoration failure, worker safety, budget overruns, demoralization.</p>
+                    <p style="margin: 1rem 0;"><strong>Likelihood:</strong> Likely (50-75%) - climate impacts accelerating.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Worker Protection Safeguards -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Mandatory Worker Protection Safeguards</h2>
+            
+            <div class="safeguard-panel">
+                <h3 style="color: var(--warning); margin-bottom: 1rem;">🛡️ Non-Negotiable Employment Standards</h3>
+                
+                <div class="mitigation-list">
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Minimum Wage Floor:</strong> All positions must pay provincial median wage +10% minimum. Restoration ecologists: $75K+, technicians: $45K+. Public wage posting required.
+                        </div>
+                    </div>
+
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Anonymous Complaint Hotline:</strong> Third-party operated, multilingual, 24/7 access. Workers can report violations without immigration consequences. Complaints trigger immediate investigation.
+                        </div>
+                    </div>
+
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Rights Education:</strong> Mandatory orientation in worker's language covering: labor rights, immigration status protections, complaint procedures, health & safety, emergency contacts. Written materials provided.
+                        </div>
+                    </div>
+
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Immigration Status Protection:</strong> Workers who report violations are shielded from immigration consequences. Whistleblower protection equivalent to Canadian labor law.
+                        </div>
+                    </div>
+
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Unannounced Workplace Audits:</strong> 15% of employers audited annually without notice. Labor standards officers check wages, hours, working conditions, housing quality. Non-compliance = designation removal.
+                        </div>
+                    </div>
+
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Housing Standards:</strong> Employer-provided housing must meet provincial residential standards. Independent inspections required. Maximum rent: 30% of gross wage. No overcrowding.
+                        </div>
+                    </div>
+
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Freedom of Mobility:</strong> Workers can change employers within restoration sector without immigration penalty. 2-week notice required. Employer cannot confiscate passports or restrict movement.
+                        </div>
+                    </div>
+
+                    <div class="mitigation-item">
+                        <div>
+                            <strong>Health & Safety Training:</strong> Wilderness first aid, species identification (poison ivy, dangerous wildlife), chainsaw safety, herbicide certification, heat/cold stress management. Employer-funded.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fraud Prevention -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Immigration Fraud Prevention Protocols</h2>
+            
+            <div class="mitigation-list">
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Employer Designation Requirements:</strong> Financial audit (3 years), restoration project track record verification, labor law compliance history check, site visits, references from past workers.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Credential Authentication:</strong> All Educational Credential Assessments through secure WES/IQAS portals with institution verification. Direct contact with issuing universities for degree confirmation.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Employment Verification:</strong> Video interviews with applicants assessing restoration knowledge. Reference checks with previous employers. Portfolio review of restoration projects worked on.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Site Visit Requirements:</strong> All designated employers receive unannounced site visits pre-designation and annually thereafter. Phantom employers identified and prosecuted.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Consultant Regulation:</strong> Only regulated immigration consultants (RCICs) or lawyers can represent applicants. Ghost consultant sting operations. Penalties: program ban + CBSA referral.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Document Forensics:</strong> Advanced document verification technology for credentials. Blockchain certificate verification where available (growing internationally).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ecological Integrity -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Greenwashing Prevention & Ecological Verification</h2>
+            
+            <div class="mitigation-list">
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Third-Party Verification:</strong> Independent ecological consultants verify restoration outcomes. Cannot be hired by employer. SER-certified professionals preferred. 5-year assessments mandatory.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Satellite Monitoring:</strong> RADARSAT/Sentinel-2 automated change detection. NDVI thresholds monitored monthly. Unexpected changes trigger field investigation.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>SER Recovery Wheel Standards:</strong> Projects must demonstrate improving scores annually. Stagnation/decline = corrective action plan required within 60 days or designation removal.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Carbon Credit Quality:</strong> Only IFM protocol credits eligible. Third-party validation (VCS, Gold Standard). Permanence guarantees required. No double-counting.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Public Transparency:</strong> Aggregated outcomes published annually (respecting Indigenous data sovereignty). Project-level results on Restor.eco where permitted. Failure data included - no cherry-picking.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Restor.eco Registration:</strong> All projects must register on platform within 30 days of visa worker arrival. High-resolution imagery provides accountability. Public can monitor progress.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indigenous Rights Protection -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Indigenous Rights & UNDRIP Compliance Enforcement</h2>
+            
+            <div class="mitigation-list">
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Mandatory FPIC Before Visa Issuance:</strong> No visa workers deployed to Indigenous territories without documented Free, Prior and Informed Consent. Band Council Resolutions required for First Nations.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Indigenous Oversight Committee:</strong> Guardian Network representatives on program governance board. Veto power over projects on Indigenous lands. Quarterly reviews.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>OCAP® Enforcement:</strong> All data on Indigenous territories subject to Ownership, Control, Access, Possession principles. Violations = federal investigation + program removal.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Benefit-Sharing Audits:</strong> Carbon credit revenue, ecosystem services payments audited to ensure Indigenous communities receive negotiated share (typically 60-70%). Annual financial reporting.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Right to Withdraw Consent:</strong> Indigenous nations can withdraw consent at any time. Projects must cease within 30 days. Workers reassigned to other projects or supported to return home.
+                    </div>
+                </div>
+
+                <div class="mitigation-item">
+                    <div>
+                        <strong>Cultural Sensitivity Training:</strong> All visa workers receive mandatory training on Indigenous rights, UNDRIP, local protocols before starting work on Indigenous territories. Nation-specific content.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incident Response Framework -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Incident Response Protocol</h2>
+            <p style="margin-bottom: 1.5rem;">Standardized procedures for responding to violations, complaints, and adverse events.</p>
+
+            <div class="incident-response">
+                <h3 style="color: var(--danger); margin-bottom: 1rem;">🚨 Response Escalation Levels</h3>
+
+                <div class="response-step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <strong>Level 1 - Minor Non-Compliance (24-48 hour response)</strong>
+                        <p>Examples: Late reporting, minor paperwork errors, correctable issues</p>
+                        <p><strong>Action:</strong> Warning letter, 30-day correction period, follow-up inspection</p>
+                    </div>
+                </div>
+
+                <div class="response-step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <strong>Level 2 - Moderate Violations (Immediate response)</strong>
+                        <p>Examples: Wage underpayment, safety violations, housing deficiencies, FPIC procedural errors</p>
+                        <p><strong>Action:</strong> Immediate investigation, employer designation suspension, workers offered reassignment, 14-day remediation deadline</p>
+                    </div>
+                </div>
+
+                <div class="response-step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <strong>Level 3 - Serious Violations (Emergency response)</strong>
+                        <p>Examples: Serious safety incident, pattern of exploitation, fraud, UNDRIP breach, greenwashing scheme</p>
+                        <p><strong>Action:</strong> Designation revoked immediately, workers removed from site, criminal investigation referral (CBSA/RCMP), public disclosure</p>
+                    </div>
+                </div>
+
+                <div class="response-step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <strong>Level 4 - Systemic Failure (Program suspension)</strong>
+                        <p>Examples: Multiple simultaneous Level 3 incidents, oversight breakdown, widespread fraud, program not achieving ecological outcomes</p>
+                        <p><strong>Action:</strong> Entire program paused pending review, independent investigation, ministerial intervention, public inquiry if warranted</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring Framework -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Continuous Risk Monitoring System</h2>
+            
+            <div class="monitoring-framework">
+                <h3 style="color: var(--success); margin-bottom: 1rem;">📊 Multi-Layer Monitoring Approach</h3>
+                
+                <div style="margin: 1.5rem 0;">
+                    <strong style="display: block; margin-bottom: 0.5rem;">Layer 1: Real-Time Indicators (Automated)</strong>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Satellite imagery analysis - weekly NDVI checks</li>
+                        <li>Anonymous complaint system - 24/7 monitoring</li>
+                        <li>Wage payment verification - monthly employer reporting</li>
+                        <li>Immigration processing times - flag unusual patterns</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 1.5rem 0;">
+                    <strong style="display: block; margin-bottom: 0.5rem;">Layer 2: Quarterly Reviews</strong>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Employer compliance reporting</li>
+                        <li>Worker surveys (anonymous, conducted by third party)</li>
+                        <li>Ecological progress reports reviewed</li>
+                        <li>Settlement service provider feedback</li>
+                        <li>Indigenous partnership satisfaction assessment</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 1.5rem 0;">
+                    <strong style="display: block; margin-bottom: 0.5rem;">Layer 3: Annual Audits</strong>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>15% employer audit (unannounced site visits)</li>
+                        <li>Financial audit of program expenditures</li>
+                        <li>Retention rate analysis (target: 85%+)</li>
+                        <li>Ecological outcome verification (SER standards)</li>
+                        <li>Equity analysis (Indigenous employment, women in restoration)</li>
+                    </ul>
+                </div>
+
+                <div style="margin: 1.5rem 0;">
+                    <strong style="display: block; margin-bottom: 0.5rem;">Layer 4: Independent Evaluation (Every 3 years)</strong>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>External evaluators with no program involvement</li>
+                        <li>Cost-benefit analysis vs projections</li>
+                        <li>International expert peer review</li>
+                        <li>Worker experience in-depth interviews</li>
+                        <li>Indigenous community impact assessment</li>
+                        <li>Public report with recommendations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Complete Framework Exploration</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='10_international_precedents.html'" style="width: auto;">International Precedents Analyzer →</button>
+                <button class="btn btn-primary" onclick="window.location.href='01_executive_dashboard.html'" style="width: auto;">← Return to Dashboard</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🛡️ Zero Tolerance for Harm</h3>
+            <p><strong>CRITICAL PRINCIPLE:</strong> This framework exists to PREVENT harm, not just respond to it. Worker exploitation, Indigenous rights violations, ecological greenwashing, and immigration fraud are not acceptable trade-offs for program success. Any violation triggers immediate investigation and consequences. Worker safety and dignity are non-negotiable. Indigenous sovereignty is paramount on Indigenous territories. Ecological outcomes must be genuine or program fails its purpose. Robust monitoring and enforcement mechanisms must be operational BEFORE first visa issued. This is not optional - it is the foundation of program legitimacy.</p>
+        </div>
+    </footer>
+
+    <script>
+        console.log('%c⚠️ Risk Assessment & Mitigation Matrix', 'color: #dc3545; font-size: 18px; font-weight: bold;');
+        console.log('%cComprehensive safeguards against exploitation, fraud, and harm', 'color: #4A4A4A; font-size: 12px;');
+    </script>
+</body>
+</html>
