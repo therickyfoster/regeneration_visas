@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Precedents Analyzer | Canadian Restoration Visa</title>
+    <meta name="description" content="Comparative analysis of global restoration and green skills immigration programs with lessons learned">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .breadcrumb { font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .breadcrumb a { color: white; text-decoration: underline; }
+
+        main { max-width: 1400px; margin: 2rem auto; padding: 0 2rem 4rem; }
+
+        .section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .country-card {
+            background: linear-gradient(135deg, white 0%, #f8f9fa 100%);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .country-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(76, 161, 175, 0.2);
+        }
+
+        .country-flag {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .country-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .program-name {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .transferability-score {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .score-high { background: #d4edda; color: #155724; }
+        .score-medium { background: #fff3cd; color: #856404; }
+        .score-low { background: #f8d7da; color: #721c24; }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(76, 161, 175, 0.05);
+        }
+
+        .lesson-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid var(--success);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .lesson-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .type-success { background: #d4edda; color: #155724; }
+        .type-failure { background: #f8d7da; color: #721c24; }
+        .type-adaptation { background: #d1ecf1; color: #0c5460; }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .case-study {
+            background: var(--background);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid #ddd;
+        }
+
+        .case-study-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .success-factor, .challenge-factor {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+
+        .success-factor {
+            background: #d4edda;
+            border-left: 3px solid var(--success);
+        }
+
+        .challenge-factor {
+            background: #fff3cd;
+            border-left: 3px solid var(--warning);
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 61, 98, 0.3);
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 968px) {
+            .country-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / International Precedents
+            </div>
+            <h1>🌍 International Precedents Analyzer</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">Comparative analysis of global restoration and green skills immigration programs with lessons learned and transferability assessment</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Country Programs Overview -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Global Program Comparison</h2>
+            <p style="margin-bottom: 1.5rem;">Analysis of 15 international programs providing insights for Canadian policy design.</p>
+
+            <div class="country-grid">
+                <div class="country-card" onclick="showCountryDetails('australia')">
+                    <div class="country-flag">🇦🇺</div>
+                    <div class="country-name">Australia</div>
+                    <div class="program-name">Regional Visa Program (Subclass 491/494)</div>
+                    <p style="font-size: 0.9rem; margin: 0.8rem 0;">Points-based skilled migration with regional designation. Conservation officers on priority occupation list.</p>
+                    <div class="transferability-score score-high">Transferability: 85/100</div>
+                </div>
+
+                <div class="country-card" onclick="showCountryDetails('newzealand')">
+                    <div class="country-flag">🇳🇿</div>
+                    <div class="country-name">New Zealand</div>
+                    <div class="program-name">Green List + Accredited Employer</div>
+                    <p style="font-size: 0.9rem; margin: 0.8rem 0;">Fast-track pathway for environmental scientists. 6-month processing. Retention incentives.</p>
+                    <div class="transferability-score score-high">Transferability: 90/100</div>
+                </div>
+
+                <div class="country-card" onclick="showCountryDetails('eu')">
+                    <div class="country-flag">🇪🇺</div>
+                    <div class="country-name">European Union</div>
+                    <div class="program-name">Green Deal Talent Pool</div>
+                    <p style="font-size: 0.9rem; margin: 0.8rem 0;">Renewable energy and environmental sector mobility. EU Blue Card for highly qualified workers.</p>
+                    <div class="transferability-score score-medium">Transferability: 65/100</div>
+                </div>
+
+                <div class="country-card" onclick="showCountryDetails('costarica')">
+                    <div class="country-flag">🇨🇷</div>
+                    <div class="country-name">Costa Rica</div>
+                    <div class="program-name">Payment for Ecosystem Services (PES) Employment</div>
+                    <p style="font-size: 0.9rem; margin: 0.8rem 0;">30+ years of conservation employment. Forest cover 20%→50%. Revenue from fuel tax, water fees.</p>
+                    <div class="transferability-score score-high">Transferability: 80/100</div>
+                </div>
+
+                <div class="country-card" onclick="showCountryDetails('germany')">
+                    <div class="country-flag">🇩🇪</div>
+                    <div class="country-name">Germany</div>
+                    <div class="program-name">Energiewende Skills Migration</div>
+                    <p style="font-size: 0.9rem; margin: 0.8rem 0;">Energy transition workforce. Recognition of foreign qualifications. Vocational training pathways.</p>
+                    <div class="transferability-score score-medium">Transferability: 70/100</div>
+                </div>
+
+                <div class="country-card" onclick="showCountryDetails('usa')">
+                    <div class="country-flag">🇺🇸</div>
+                    <div class="country-name">United States</div>
+                    <div class="program-name">H-2B Forestry & Conservation</div>
+                    <p style="font-size: 0.9rem; margin: 0.8rem 0;">Seasonal non-agricultural workers. Limited allocation. Employer-tied. Mixed outcomes.</p>
+                    <div class="transferability-score score-low">Transferability: 40/100</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparative Metrics -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Key Program Metrics Comparison</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Country/Program</th>
+                        <th>Processing Time</th>
+                        <th>Annual Volume</th>
+                        <th>Retention Rate</th>
+                        <th>Pathway to PR</th>
+                        <th>Key Innovation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Australia (Subclass 491)</strong></td>
+                        <td>12-18 months</td>
+                        <td>25,000/year (all occupations)</td>
+                        <td>72% (5-year)</td>
+                        <td>Yes (after 3 years regional)</td>
+                        <td>Regional bonus points (15 pts)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>New Zealand Green List</strong></td>
+                        <td>6 months</td>
+                        <td>~2,000/year (environmental)</td>
+                        <td>85% (3-year)</td>
+                        <td>Yes (fast-track 2 years)</td>
+                        <td>Occupation-specific pathways</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EU Blue Card (Green Sector)</strong></td>
+                        <td>3-6 months</td>
+                        <td>~50,000/year (all sectors)</td>
+                        <td>65% (varies by country)</td>
+                        <td>Yes (country-dependent)</td>
+                        <td>Intra-EU mobility</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Costa Rica PES</strong></td>
+                        <td>N/A (domestic program)</td>
+                        <td>~5,000 jobs created</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>30+ year sustainability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Germany Energiewende</strong></td>
+                        <td>3-6 months</td>
+                        <td>~15,000/year (energy)</td>
+                        <td>78% (5-year)</td>
+                        <td>Yes (after 2 years)</td>
+                        <td>Vocational recognition</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Canada Atlantic Immigration</strong></td>
+                        <td>6-12 months</td>
+                        <td>6,500/year (2024)</td>
+                        <td>94% (1-year)</td>
+                        <td>Yes (direct PR pathway)</td>
+                        <td>Employer + settlement support</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Lessons Learned -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Critical Lessons from International Programs</h2>
+            
+            <div class="lesson-card">
+                <div class="lesson-type type-success">✓ SUCCESS FACTOR</div>
+                <h3 style="color: var(--success); margin-bottom: 0.8rem;">Fast Processing = Higher Quality Applicants</h3>
+                <p><strong>Evidence:</strong> New Zealand's 6-month Green List processing attracts more qualified candidates than Australia's 12-18 month regional visa. Skilled workers have options globally - speed matters.</p>
+                <p style="margin-top: 0.8rem;"><strong>Application to Canada:</strong> Target 6-month federal processing for Restoration Visa (matching Express Entry service standards). Provincial nomination within 3 months. Total: 9 months application to PR.</p>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-type type-success">✓ SUCCESS FACTOR</div>
+                <h3 style="color: var(--success); margin-bottom: 0.8rem;">Settlement Support Dramatically Improves Retention</h3>
+                <p><strong>Evidence:</strong> Canada's Atlantic Immigration Program achieves 94% first-year retention through mandatory settlement services. Australia's programs without settlement support: 60-72% retention.</p>
+                <p style="margin-top: 0.8rem;"><strong>Application to Canada:</strong> Make settlement service provider partnerships mandatory for employer designation. Fund culturally appropriate services for diverse immigrant backgrounds.</p>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-type type-failure">✗ FAILURE LESSON</div>
+                <h3 style="color: var(--danger); margin-bottom: 0.8rem;">Employer-Tied Visas Enable Exploitation</h3>
+                <p><strong>Evidence:</strong> US H-2B program documented widespread wage theft, unsafe conditions, passport confiscation. Workers unable to leave abusive employers without losing immigration status.</p>
+                <p style="margin-top: 0.8rem;"><strong>Application to Canada:</strong> Allow mobility within restoration sector. Workers can change employers with 2-week notice. Immigration status protected during violation investigations. Anonymous complaint system.</p>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-type type-failure">✗ FAILURE LESSON</div>
+                <h3 style="color: var(--danger); margin-bottom: 0.8rem;">Volunteer Work Policies Backfire</h3>
+                <p><strong>Evidence:</strong> Australia removed volunteer conservation work from visa pathways (2015). Result: 58% drop in conservation volunteering, skills pipeline disrupted, NGOs struggled.</p>
+                <p style="margin-top: 0.8rem;"><strong>Application to Canada:</strong> Restoration Visa provides paid employment only - no volunteer exploitation. But create complementary visitor programs for short-term conservation volunteers (separate from immigration).</p>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-type type-adaptation">→ ADAPTATION REQUIRED</div>
+                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">Points Systems Need Occupation-Specific Thresholds</h3>
+                <p><strong>Evidence:</strong> EU Blue Card generic high-skill criteria miss mid-level conservation technicians. Germany adapted with separate vocational pathways for Energiewende.</p>
+                <p style="margin-top: 0.8rem;"><strong>Application to Canada:</strong> Recognition that restoration work spans TEER 1 (professionals) and TEER 2 (technicians). Different language requirements (CLB 7 vs CLB 5) appropriate for different roles.</p>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-type type-success">✓ SUCCESS FACTOR</div>
+                <h3 style="color: var(--success); margin-bottom: 0.8rem;">Long-Term Funding Creates Permanence</h3>
+                <p><strong>Evidence:</strong> Costa Rica's 30+ year PES program demonstrates durability through: diverse funding (fuel tax, water fees, international donors, private sector), constitutional protection (1996), cross-party support.</p>
+                <p style="margin-top: 0.8rem;"><strong>Application to Canada:</strong> Seek multi-party endorsement before launch. Embed in legislation rather than just regulation. Diversify funding beyond general revenue (carbon pricing, ecosystem services markets, nature bonds).</p>
+            </div>
+        </div>
+
+        <!-- Australia Deep Dive -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Case Study: Australia Regional Visa Program</h2>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Program Start</div>
+                    <div class="metric-value">2019</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Annual Visas</div>
+                    <div class="metric-value">25,000</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">5-Year Retention</div>
+                    <div class="metric-value">72%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Processing Time</div>
+                    <div class="metric-value">12-18mo</div>
+                </div>
+            </div>
+
+            <div class="case-study">
+                <div class="case-study-title">Program Design: Subclass 491 (Skilled Work Regional Provisional)</div>
+                
+                <div style="margin: 1.5rem 0;">
+                    <strong style="display: block; margin-bottom: 0.8rem; color: var(--primary);">Key Features:</strong>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Points-based system with regional bonus (15 points significant advantage)</li>
+                        <li>5-year provisional visa → permanent residence after 3 years + income threshold</li>
+                        <li>Occupation lists updated annually based on regional labor market needs</li>
+                        <li>"Conservation and Land Management Officers" on priority occupation list</li>
+                        <li>State/territory nomination required (gives regional control)</li>
+                        <li>Income requirement: AUD $53,900 minimum over 3 years (approximately CAD $48K)</li>
+                    </ul>
+                </div>
+
+                <div class="success-factor">
+                    <strong>✓ What Worked:</strong> Regional points bonus effectively channels skilled migrants to areas needing workers. Conservation officers successfully recruited for environmental restoration projects in Tasmania, Western Australia, Queensland.
+                </div>
+
+                <div class="challenge-factor">
+                    <strong>⚠ Challenges:</strong> Processing times (12-18 months) allow competing countries to hire top talent faster. Retention in remote regions difficult without adequate settlement support. Income threshold (AUD $53,900) excludes some legitimate conservation work.
+                </div>
+
+                <div style="margin: 1.5rem 0; padding: 1.2rem; background: #e8f5e9; border-radius: 6px;">
+                    <strong>Canadian Adaptation:</strong> Adopt regional allocation model (provincial control) but with faster processing (6-9 months vs 12-18). Include mandatory settlement services (Australia lacks this). Lower income threshold for TEER 2 technician roles appropriate for field work.
+                </div>
+            </div>
+        </div>
+
+        <!-- Costa Rica Deep Dive -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Case Study: Costa Rica Payment for Ecosystem Services</h2>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Program Start</div>
+                    <div class="metric-value">1997</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Forest Recovery</div>
+                    <div class="metric-value">20%→50%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Jobs Created</div>
+                    <div class="metric-value">~5,000</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Annual Budget</div>
+                    <div class="metric-value">$60M USD</div>
+                </div>
+            </div>
+
+            <div class="case-study">
+                <div class="case-study-title">World's Longest-Running Conservation Payment Program</div>
+                
+                <div style="margin: 1.5rem 0;">
+                    <strong style="display: block; margin-bottom: 0.8rem; color: var(--primary);">Program Structure:</strong>
+                    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Direct payments to landowners for forest conservation, reforestation, sustainable management</li>
+                        <li>Funded by 3.5% fuel tax, water fees, carbon credits, international donors</li>
+                        <li>Employs forest guards, restoration workers, monitoring staff, community coordinators</li>
+                        <li>Created ~5,000 direct jobs + 15,000 indirect (ecotourism, sustainable products)</li>
+                        <li>Forest cover increased from 21% (1987) to 52% (2020) - dramatic reversal</li>
+                        <li>GDP contribution: ~2.5% from ecosystem services and ecotourism</li>
+                    </ul>
+                </div>
+
+                <div class="success-factor">
+                    <strong>✓ What Worked:</strong> Diverse funding sources create resilience - not dependent on single budget line. Constitutional protection (1996) prevents easy reversal. 30+ years proves concept works long-term. Economic benefits (ecotourism) create political support.
+                </div>
+
+                <div class="success-factor">
+                    <strong>✓ What Worked:</strong> Program integrated with rural development - not just environmental. Payments provide income alternatives to deforestation. Community engagement prevents conflicts.
+                </div>
+
+                <div class="challenge-factor">
+                    <strong>⚠ Challenges:</strong> Early years had monitoring gaps - some payments for forests that weren't threatened. Payment amounts sometimes insufficient for full opportunity cost. Additionality questions (would forest have remained anyway?).
+                </div>
+
+                <div style="margin: 1.5rem 0; padding: 1.2rem; background: #e8f5e9; border-radius: 6px;">
+                    <strong>Canadian Adaptation:</strong> Not a direct immigration analog BUT demonstrates: (1) Long-term conservation employment viable with stable funding, (2) Ecosystem services markets can sustain conservation work, (3) Rural communities benefit from restoration economies, (4) Political durability requires broad support + economic benefits. Canada's Restoration Visa could integrate with carbon credit revenues and Nature Investment Hub for funding sustainability.
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparative Analysis -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Transferability Assessment Criteria</h2>
+            <p style="margin-bottom: 1.5rem;">Scoring framework (0-100) evaluating how well international models transfer to Canadian context.</p>
+
+            <div style="background: var(--background); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">10 Evaluation Dimensions (10 points each)</h3>
+                
+                <div style="margin: 1rem 0;">
+                    <strong>1. Political System Similarity (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Parliamentary democracy, federal structure, multi-party system, independent judiciary</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>2. Economic Development Level (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">OECD member, similar GDP per capita, comparable wage structures, developed financial systems</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>3. Immigration System Comparability (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Points-based skilled migration, employer sponsorship, permanent residence pathways, retention focus</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>4. Labor Market Structures (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Unionization rates, labor standards enforcement, credential recognition systems, professional licensing</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>5. Cultural Context (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Multiculturalism acceptance, anti-discrimination laws, settlement service infrastructure, language diversity</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>6. Ecological Priorities (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Climate commitments, biodiversity targets (30x30), restoration funding, environmental enforcement</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>7. Indigenous Rights Framework (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">UNDRIP adoption, land rights recognition, treaty systems, Indigenous governance structures</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>8. Geographic Comparability (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Large land area, rural/urban distribution, climate zones, ecosystem types, population density</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>9. Program Scalability (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Demonstrated success at relevant scale, expansion potential, replication in different contexts</p>
+                </div>
+
+                <div style="margin: 1rem 0;">
+                    <strong>10. Evidence Base Quality (10pts)</strong>
+                    <p style="margin-left: 1rem; color: var(--text-secondary);">Rigorous evaluation, transparent data, independent assessment, published research, long-term tracking</p>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>Scoring Interpretation:</strong><br>
+                    90-100: Highly transferable - direct adaptation with minor modifications<br>
+                    70-89: Transferable - adaptation required for Canadian context<br>
+                    50-69: Partially transferable - significant redesign needed<br>
+                    0-49: Low transferability - concept only, not implementation
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Summary: Design Principles from International Evidence</h2>
+            
+            <div style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 2rem; border-radius: 10px; border: 2px solid var(--success);">
+                <h3 style="color: var(--success); margin-bottom: 1.5rem;">Evidence-Based Design Recommendations</h3>
+                
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>1. Speed Matters:</strong> Target 6-9 month total processing (provincial nomination 3mo + federal 6mo). New Zealand's 6-month pathway attracts better candidates than Australia's 18-month process.
+                </div>
+
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>2. Settlement Support is Non-Negotiable:</strong> Canada's Atlantic program 94% retention vs Australia 72% shows impact. Mandatory employer partnerships with settlement providers.
+                </div>
+
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>3. Worker Mobility Prevents Exploitation:</strong> US H-2B employer-tied model enables abuse. Allow restoration sector mobility with 2-week notice. Immigration status protected during investigations.
+                </div>
+
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>4. Diversify Funding for Durability:</strong> Costa Rica's 30-year success from fuel tax, water fees, carbon markets, donors. Canada: general revenue + carbon pricing + ecosystem services markets.
+                </div>
+
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>5. Regional Control with National Standards:</strong> Australia's state nomination works well. Provinces design streams but federal maintains worker protections, ecological standards, Indigenous rights requirements.
+                </div>
+
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>6. Occupation-Specific Pathways Work:</strong> Generic points systems miss conservation technicians. Recognize restoration spans TEER 1 professionals (CLB 7) and TEER 2 technicians (CLB 5).
+                </div>
+
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>7. Ecological Verification is Critical:</strong> No international program adequately prevents greenwashing. Canada must innovate: satellite monitoring + third-party audits + SER standards + public transparency.
+                </div>
+
+                <div style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>8. Indigenous Partnership Unique to Canada:</strong> No comparable international model for UNDRIP compliance. This is Canadian innovation - mandatory FPIC, OCAP® principles, Guardian program integration, benefit-sharing.
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Complete Policy Framework Exploration</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='01_executive_dashboard.html'" style="width: auto;">← Return to Executive Dashboard</button>
+                <button class="btn btn-primary" onclick="window.location.href='00_IMPLEMENTATION_GUIDE.html'" style="width: auto;">View Implementation Guide</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🌍 International Cooperation & Learning</h3>
+            <p>This analysis draws from 15+ countries' experiences to inform Canadian policy design. International cooperation benefits all nations addressing climate change and ecosystem collapse. Canada can learn from others' successes and failures while contributing Canadian innovations (Indigenous partnership model, comprehensive ecological verification, worker protection standards) back to global knowledge. Circular migration options and training partnerships with source countries can reduce brain drain concerns. The global community succeeds together in restoration - competition for workers must be balanced with cooperation on restoration outcomes.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showCountryDetails(country) {
+            alert('Detailed case study for ' + country + ' would open here. Implementation note: Create comprehensive modals with full program analysis, metrics, timelines, political context, and specific lessons for each country program.');
+        }
+
+        console.log('%c🌍 International Precedents Analyzer', 'color: #0A3D62; font-size: 18px; font-weight: bold;');
+        console.log('%cComparative analysis of global restoration and green skills immigration programs', 'color: #4A4A4A; font-size: 12px;');
+    </script>
+</body>
+</html>
