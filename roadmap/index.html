@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Roadmap Planner | Canadian Restoration Visa</title>
+    <meta name="description" content="Interactive implementation timeline with milestones, stakeholders, and budget planning">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .breadcrumb { font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .breadcrumb a { color: white; text-decoration: underline; }
+
+        main { max-width: 1400px; margin: 2rem auto; padding: 0 2rem 4rem; }
+
+        .section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .phase-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .phase-card {
+            background: linear-gradient(135deg, var(--surface) 0%, #f8f9fa 100%);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(76, 161, 175, 0.2);
+            border-color: var(--secondary);
+        }
+
+        .phase-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .phase-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .gantt-chart {
+            overflow-x: auto;
+            margin: 2rem 0;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .gantt-timeline {
+            min-width: 1200px;
+        }
+
+        .timeline-header {
+            display: grid;
+            grid-template-columns: 250px repeat(24, 1fr);
+            gap: 2px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .timeline-row {
+            display: grid;
+            grid-template-columns: 250px repeat(24, 1fr);
+            gap: 2px;
+            margin-bottom: 0.5rem;
+            align-items: center;
+        }
+
+        .task-label {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .timeline-cell {
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 2px;
+        }
+
+        .timeline-bar {
+            height: 30px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--secondary) 100%);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-bar:hover {
+            transform: scaleY(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .stakeholder-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stakeholder-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .stakeholder-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .stakeholder-role {
+            background: rgba(76, 161, 175, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin: 0.2rem;
+        }
+
+        .milestone-list {
+            background: var(--background);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .milestone-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background: white;
+            margin: 0.8rem 0;
+            border-radius: 6px;
+            border-left: 4px solid var(--success);
+        }
+
+        .milestone-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+        }
+
+        .budget-table thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .budget-table th, .budget-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .budget-table tbody tr:hover {
+            background: rgba(76, 161, 175, 0.05);
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 61, 98, 0.3);
+        }
+
+        .critical-path {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 968px) {
+            .phase-overview, .stakeholder-matrix { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / Implementation Roadmap
+            </div>
+            <h1>📅 Implementation Roadmap Planner</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">Phased rollout timeline, stakeholder coordination, and budget planning from 2026-2031</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Phase Overview -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Five-Phase Implementation Timeline</h2>
+            <p style="margin-bottom: 1.5rem;">Strategic rollout from policy development through national maturity over 5 years.</p>
+
+            <div class="phase-overview">
+                <div class="phase-card" onclick="showPhaseDetails('phase1')">
+                    <div class="phase-number">1</div>
+                    <div class="phase-title">Q2-Q4 2026</div>
+                    <p><strong>Policy Development</strong></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-secondary);">Federal-provincial coordination, Indigenous consultation framework, program design</p>
+                </div>
+
+                <div class="phase-card" onclick="showPhaseDetails('phase2')">
+                    <div class="phase-number">2</div>
+                    <div class="phase-title">Q1-Q4 2027</div>
+                    <p><strong>Pilot Launch</strong></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-secondary);">1,000 visas, 4 provinces (BC, ON, MB, NWT), baseline monitoring</p>
+                </div>
+
+                <div class="phase-card" onclick="showPhaseDetails('phase3')">
+                    <div class="phase-number">3</div>
+                    <div class="phase-title">2028</div>
+                    <p><strong>Evaluation & Iteration</strong></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-secondary);">Outcome assessment, program refinement, expansion planning</p>
+                </div>
+
+                <div class="phase-card" onclick="showPhaseDetails('phase4')">
+                    <div class="phase-number">4</div>
+                    <div class="phase-title">2029-2030</div>
+                    <p><strong>National Expansion</strong></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-secondary);">5,000-10,000 annual visas, 8-10 provinces/territories</p>
+                </div>
+
+                <div class="phase-card" onclick="showPhaseDetails('phase5')">
+                    <div class="phase-number">5</div>
+                    <div class="phase-title">2031+</div>
+                    <p><strong>Mature Program</strong></p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-secondary);">Permanent program status, continuous improvement, international model</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gantt Chart -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Visual Timeline (Gantt Chart)</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-secondary);">Interactive visualization of key milestones and dependencies across 24 quarters (Q2 2026 - Q1 2032)</p>
+
+            <div class="gantt-chart">
+                <div class="gantt-timeline">
+                    <div class="timeline-header">
+                        <div></div>
+                        <div>Q2'26</div><div>Q3'26</div><div>Q4'26</div><div>Q1'27</div>
+                        <div>Q2'27</div><div>Q3'27</div><div>Q4'27</div><div>Q1'28</div>
+                        <div>Q2'28</div><div>Q3'28</div><div>Q4'28</div><div>Q1'29</div>
+                        <div>Q2'29</div><div>Q3'29</div><div>Q4'29</div><div>Q1'30</div>
+                        <div>Q2'30</div><div>Q3'30</div><div>Q4'30</div><div>Q1'31</div>
+                        <div>Q2'31</div><div>Q3'31</div><div>Q4'31</div><div>Q1'32</div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">Federal-Provincial Coordination</div>
+                        <div class="timeline-bar" style="grid-column: 2 / 5;"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">Indigenous Consultation</div>
+                        <div class="timeline-cell"></div>
+                        <div class="timeline-bar" style="grid-column: 3 / 7;"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">Credential Framework Development</div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-bar" style="grid-column: 4 / 6;"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">Pilot Program Launch</div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-bar" style="grid-column: 6 / 9;"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">Monitoring & Data Collection</div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-bar" style="grid-column: 8 / 13;"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">Pilot Evaluation & Refinement</div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div>
+                        <div class="timeline-bar" style="grid-column: 11 / 13;"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">National Expansion</div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-bar" style="grid-column: 14 / 21;"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                    </div>
+
+                    <div class="timeline-row">
+                        <div class="task-label">Permanent Program Operations</div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div><div class="timeline-cell"></div>
+                        <div class="timeline-bar" style="grid-column: 22 / 25;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Critical Path Items -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Critical Path Dependencies</h2>
+            <p style="margin-bottom: 1.5rem;">These items must be completed on schedule as delays will cascade through subsequent phases.</p>
+
+            <div class="critical-path">
+                <h3 style="color: var(--warning); margin-bottom: 1rem;">⚠️ Priority Timeline Items</h3>
+                <ul style="padding-left: 1.5rem; line-height: 2;">
+                    <li><strong>IRCC Express Entry Category Approval (6 months):</strong> Federal regulatory process. Begin Q2 2026, complete Q4 2026.</li>
+                    <li><strong>Provincial Stream Regulation Amendments (4-8 months):</strong> Each province requires legislative/regulatory changes. Stagger to avoid bottlenecks.</li>
+                    <li><strong>Indigenous Guardian Network Partnership Agreement (12-18 months):</strong> Nation-to-nation negotiations cannot be rushed. Begin immediately.</li>
+                    <li><strong>Credential Recognition System Integration (8-12 months):</strong> WES/IQAS partnership, SER CERP pathway, ECO Canada coordination.</li>
+                    <li><strong>Monitoring Platform Development (12 months):</strong> GIS integration, Restor.eco connection, RADARSAT data feeds. Parallel track to avoid delays.</li>
+                    <li><strong>Settlement Service Provider Contracting (6 months per region):</strong> RFP process, evaluation, contract execution. Regional variation significant.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stakeholder Matrix -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Key Stakeholder Coordination Matrix</h2>
+            <p style="margin-bottom: 1.5rem;">Federal-provincial-Indigenous-NGO collaboration essential for program success. Defined roles prevent duplication and gaps.</p>
+
+            <div class="stakeholder-matrix">
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">Immigration, Refugees & Citizenship Canada (IRCC)</div>
+                    <div class="stakeholder-role">Policy Lead</div>
+                    <div class="stakeholder-role">Federal Authority</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">Express Entry category approval, PNP oversight, processing standards, visa issuance, settlement services framework</p>
+                </div>
+
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">Environment & Climate Change Canada (ECCC)</div>
+                    <div class="stakeholder-role">Technical Authority</div>
+                    <div class="stakeholder-role">Restoration Standards</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">30x30 biodiversity targets, restoration priorities, monitoring protocols, GHG offset system, remote sensing data</p>
+                </div>
+
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">Indigenous Services Canada (ISC)</div>
+                    <div class="stakeholder-role">UNDRIP Compliance</div>
+                    <div class="stakeholder-role">Indigenous Relations</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">FPIC protocol implementation, Guardian program coordination, IPCA support, data sovereignty assurance</p>
+                </div>
+
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">Provincial Immigration Ministries</div>
+                    <div class="stakeholder-role">Program Delivery</div>
+                    <div class="stakeholder-role">Regional Customization</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">PNP stream design, employer designation, applicant processing, settlement service coordination, retention tracking</p>
+                </div>
+
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">First Nations National Guardians Network</div>
+                    <div class="stakeholder-role">Indigenous Governance</div>
+                    <div class="stakeholder-role">Partnership Oversight</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">Guardian program integration, Indigenous employment priority, benefit-sharing agreements, monitoring participation</p>
+                </div>
+
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">Society for Ecological Restoration (SER)</div>
+                    <div class="stakeholder-role">Technical Standards</div>
+                    <div class="stakeholder-role">Credential Validation</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">CERP certification pathway, restoration standards verification, curriculum review, international coordination</p>
+                </div>
+
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">ECO Canada</div>
+                    <div class="stakeholder-role">Skills Assessment</div>
+                    <div class="stakeholder-role">Professional Development</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">Environmental Professional designation, skills gap analysis, bridging program connections, labor market data</p>
+                </div>
+
+                <div class="stakeholder-card">
+                    <div class="stakeholder-name">Nature United / Smart Prosperity Institute</div>
+                    <div class="stakeholder-role">Finance Mechanisms</div>
+                    <div class="stakeholder-role">Economic Analysis</div>
+                    <p style="margin: 1rem 0; font-size: 0.9rem;">Nature Investment Hub coordination, blended finance models, ROI documentation, carbon credit markets</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Planning -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Multi-Year Budget Allocation</h2>
+            <p style="margin-bottom: 1.5rem;">Federal-provincial cost-sharing model with baseline funding estimates across program phases.</p>
+
+            <table class="budget-table">
+                <thead>
+                    <tr>
+                        <th>Budget Category</th>
+                        <th>2026-2027 (Pilot)</th>
+                        <th>2028 (Evaluation)</th>
+                        <th>2029-2030 (Expansion)</th>
+                        <th>2031+ (Annual Ops)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Program Administration</strong></td>
+                        <td>$2.5M</td>
+                        <td>$1.8M</td>
+                        <td>$8M</td>
+                        <td>$12M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IRCC Processing Capacity</strong></td>
+                        <td>$1.5M</td>
+                        <td>$0.8M</td>
+                        <td>$5M</td>
+                        <td>$8M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Credential Recognition Infrastructure</strong></td>
+                        <td>$800K</td>
+                        <td>$200K</td>
+                        <td>$1.2M</td>
+                        <td>$500K</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Indigenous Partnership Support</strong></td>
+                        <td>$3M</td>
+                        <td>$2M</td>
+                        <td>$10M</td>
+                        <td>$15M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitoring & Verification Systems</strong></td>
+                        <td>$2.2M</td>
+                        <td>$1.5M</td>
+                        <td>$6M</td>
+                        <td>$4M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Settlement Services</strong></td>
+                        <td>$5M</td>
+                        <td>$3M</td>
+                        <td>$25M</td>
+                        <td>$40M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Employer Support & Training</strong></td>
+                        <td>$1.5M</td>
+                        <td>$800K</td>
+                        <td>$4M</td>
+                        <td>$6M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Research & Evaluation</strong></td>
+                        <td>$1M</td>
+                        <td>$3.5M</td>
+                        <td>$2M</td>
+                        <td>$3M</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Communications & Outreach</strong></td>
+                        <td>$500K</td>
+                        <td>$300K</td>
+                        <td>$1.5M</td>
+                        <td>$2M</td>
+                    </tr>
+                    <tr style="background: #e8f5e9; font-weight: 700;">
+                        <td><strong>TOTAL ANNUAL</strong></td>
+                        <td><strong>$18M</strong></td>
+                        <td><strong>$13.9M</strong></td>
+                        <td><strong>$62.7M</strong></td>
+                        <td><strong>$90.5M</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: #e8f5e9; border-radius: 8px; border-left: 4px solid var(--success);">
+                <h3 style="color: var(--success); margin-bottom: 0.8rem;">Revenue Offsets</h3>
+                <p>Carbon credit generation, ecosystem services valuation, and economic multiplier effects will generate revenue streams that can offset program costs. Conservative projections suggest 20-30% cost recovery through restoration project outcomes within 10 years.</p>
+            </div>
+        </div>
+
+        <!-- Milestone Tracker -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Implementation Milestone Checklist</h2>
+            <p style="margin-bottom: 1.5rem;">Track progress against 25 critical milestones. Check off as completed.</p>
+
+            <div class="milestone-list">
+                <div class="milestone-item">
+                    <input type="checkbox" id="m1">
+                    <label for="m1"><strong>Q2 2026:</strong> Federal-provincial MOU signed (BC, ON, MB, NWT)</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m2">
+                    <label for="m2"><strong>Q3 2026:</strong> Indigenous consultation framework approved by Guardian Network</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m3">
+                    <label for="m3"><strong>Q3 2026:</strong> IRCC Express Entry category regulatory approval received</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m4">
+                    <label for="m4"><strong>Q4 2026:</strong> Credential recognition pathway finalized with WES/IQAS/SER</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m5">
+                    <label for="m5"><strong>Q4 2026:</strong> Provincial stream regulations amended (all 4 pilot provinces)</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m6">
+                    <label for="m6"><strong>Q1 2027:</strong> Monitoring platform operational (Restor.eco integrated)</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m7">
+                    <label for="m7"><strong>Q1 2027:</strong> First employer designations approved (minimum 25 employers)</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m8">
+                    <label for="m8"><strong>Q2 2027:</strong> First 100 visa allocations issued</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m9">
+                    <label for="m9"><strong>Q4 2027:</strong> Pilot reaches 1,000 visa allocations target</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m10">
+                    <label for="m10"><strong>Q4 2027:</strong> Settlement service contracts executed (all pilot regions)</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m11">
+                    <label for="m11"><strong>Q1 2028:</strong> First-year retention data collection complete</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m12">
+                    <label for="m12"><strong>Q2 2028:</strong> Ecological baseline assessments complete (all pilot projects)</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m13">
+                    <label for="m13"><strong>Q3 2028:</strong> Independent evaluation report published</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m14">
+                    <label for="m14"><strong>Q4 2028:</strong> Program refinements approved based on evaluation</label>
+                </div>
+                <div class="milestone-item">
+                    <input type="checkbox" id="m15">
+                    <label for="m15"><strong>Q1 2029:</strong> National expansion approved (4-6 additional provinces)</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Continue Framework Development</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='09_risk_assessment.html'" style="width: auto;">Risk Assessment Matrix →</button>
+                <button class="btn btn-primary" onclick="window.location.href='10_international_precedents.html'" style="width: auto;">International Precedents →</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🛡️ Implementation Accountability</h3>
+            <p>This roadmap establishes clear timelines, responsibilities, and milestones for transparent program implementation. All stakeholders accountable for designated deliverables. Regular public reporting (quarterly minimum) ensures accountability. Independent evaluation at pilot conclusion prevents continuation of ineffective programs. Indigenous partnership timelines respect nation-to-nation consultation requirements and cannot be accelerated to meet arbitrary deadlines. Worker protection and ecological outcome verification must be operational before visa issuance begins.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showPhaseDetails(phase) {
+            alert('Detailed information for ' + phase + ' would open in a modal or expand inline. Implementation note: Add comprehensive phase details including specific tasks, responsible parties, deliverables, and success criteria.');
+        }
+
+        console.log('%c📅 Implementation Roadmap Planner', 'color: #0A3D62; font-size: 18px; font-weight: bold;');
+        console.log('%cInteractive timeline for 2026-2031 program rollout with stakeholder coordination', 'color: #4A4A4A; font-size: 12px;');
+    </script>
+</body>
+</html>
