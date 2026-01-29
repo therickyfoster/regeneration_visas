@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Assessment & Credential Recognition | Canadian Restoration Visa</title>
+    <meta name="description" content="Interactive tool for credential assessment, skills gap analysis, and bridging program pathways">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .breadcrumb { font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .breadcrumb a { color: white; text-decoration: underline; }
+
+        main { max-width: 1400px; margin: 2rem auto; padding: 0 2rem 4rem; }
+
+        .section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .tool-panel {
+            background: var(--background);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+        }
+
+        .form-group {
+            margin: 1.5rem 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(76, 161, 175, 0.1);
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .equivalency-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0.3rem 0.2rem;
+        }
+
+        .equiv-full { background: #d4edda; color: #155724; }
+        .equiv-partial { background: #fff3cd; color: #856404; }
+        .equiv-bridging { background: #cce5ff; color: #004085; }
+
+        .skills-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .skill-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: var(--accent);
+        }
+
+        .skill-level {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .skill-name {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .pathway-timeline {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline-step {
+            display: flex;
+            align-items: flex-start;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--background);
+            border-radius: 6px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 61, 98, 0.3);
+        }
+
+        .institutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .institution-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .institution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(76, 161, 175, 0.2);
+        }
+
+        .institution-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .program-details {
+            background: var(--background);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 0.8rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background: rgba(76, 161, 175, 0.05);
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 968px) {
+            .tool-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / Skills Assessment & Credential Recognition
+            </div>
+            <h1>🎓 Skills Assessment & Credential Recognition</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">Interactive tool for international credential assessment, skills gap analysis, and bridging program pathways for restoration practitioners</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Credential Assessment Tool -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">International Credential Assessment</h2>
+            <p style="margin-bottom: 1.5rem;">Map international educational credentials to Canadian equivalents using World Education Services (WES) and International Qualifications Assessment Service (IQAS) standards.</p>
+
+            <div class="tool-grid">
+                <div class="tool-panel">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Enter Applicant Credentials</h3>
+
+                    <div class="form-group">
+                        <label for="country">Country of Education</label>
+                        <select id="country">
+                            <option value="">Select country</option>
+                            <option value="india">India</option>
+                            <option value="china">China</option>
+                            <option value="philippines">Philippines</option>
+                            <option value="mexico">Mexico</option>
+                            <option value="brazil">Brazil</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="australia">Australia</option>
+                            <option value="usa">United States</option>
+                            <option value="france">France</option>
+                            <option value="germany">Germany</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="credential-type">Credential Type</label>
+                        <select id="credential-type">
+                            <option value="">Select credential</option>
+                            <option value="bachelor">Bachelor's Degree (3-4 years)</option>
+                            <option value="master">Master's Degree</option>
+                            <option value="phd">Doctorate (PhD)</option>
+                            <option value="diploma">College Diploma (2-3 years)</option>
+                            <option value="cert">Certificate/Short Program</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="field">Field of Study</label>
+                        <select id="field">
+                            <option value="">Select field</option>
+                            <option value="ecology">Ecology/Biology</option>
+                            <option value="environmental">Environmental Science</option>
+                            <option value="forestry">Forestry</option>
+                            <option value="agriculture">Agriculture/Agronomy</option>
+                            <option value="conservation">Conservation Biology</option>
+                            <option value="geography">Geography/GIS</option>
+                            <option value="other">Other Related Field</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="work-exp">Years of Restoration Work Experience</label>
+                        <input type="number" id="work-exp" min="0" max="40" placeholder="e.g., 5">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="assessCredentials()">Assess Credentials</button>
+                </div>
+
+                <div class="tool-panel">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Assessment Results</h3>
+                    <div id="assessment-results">
+                        <p style="color: var(--text-secondary); text-align: center; padding: 3rem 1rem;">Complete the form on the left to receive your credential assessment and pathway recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Matrix -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Restoration Skills Competency Matrix</h2>
+            <p style="margin-bottom: 1.5rem;">Self-assess your competency levels across 12 core restoration domains. Rate yourself 1-5 (1=Beginner, 5=Expert).</p>
+
+            <div class="skills-matrix" id="skills-matrix">
+                <!-- Skills cards will be populated dynamically -->
+            </div>
+
+            <button class="btn btn-primary" onclick="analyzeSkills()" style="max-width: 300px; margin: 2rem auto; display: block;">Analyze Skills Gap</button>
+            
+            <div id="skills-gap-result" style="display: none; margin-top: 2rem;"></div>
+        </div>
+
+        <!-- Bridging Programs -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Canadian Bridging Programs & Training Pathways</h2>
+            <p style="margin-bottom: 1.5rem;">50+ Canadian institutions offering restoration education, credential upgrading, and specialized training for international practitioners.</p>
+
+            <div class="institutions-grid">
+                <div class="institution-card">
+                    <div class="institution-name">British Columbia Institute of Technology (BCIT)</div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Location:</strong> Burnaby, BC</p>
+                    <div class="program-details">
+                        <strong>Bachelor of Ecological Restoration</strong>
+                        <p>Duration: 4 years | Cost: ~$18,000/year</p>
+                        <p>Canada's first professional undergraduate degree in ecological restoration. Fieldwork-intensive curriculum.</p>
+                    </div>
+                    <div class="program-details">
+                        <strong>Master of Ecological Restoration</strong>
+                        <p>Duration: 2 years | Cost: ~$24,000/year</p>
+                        <p>Advanced research and professional practice. Thesis or project-based.</p>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--success);">✓ PGWP Eligible | ✓ SER-Reviewed Curriculum</p>
+                </div>
+
+                <div class="institution-card">
+                    <div class="institution-name">Niagara College</div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Location:</strong> Niagara-on-the-Lake, ON</p>
+                    <div class="program-details">
+                        <strong>Graduate Certificate in Ecosystem Restoration</strong>
+                        <p>Duration: 1 year (2 semesters) | Cost: ~$15,000</p>
+                        <p>Intensive program reviewed by Society for Ecological Restoration. Hands-on restoration project experience.</p>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--success);">✓ PGWP Eligible | ✓ SER Partnership | ✓ Fast-Track</p>
+                </div>
+
+                <div class="institution-card">
+                    <div class="institution-name">Trent University</div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Location:</strong> Peterborough, ON</p>
+                    <div class="program-details">
+                        <strong>BSc in Ecological Restoration</strong>
+                        <p>Duration: 4 years | Cost: ~$28,000/year</p>
+                        <p>First bachelor's program in Canada dedicated to restoration. Strong Indigenous partnership focus.</p>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--success);">✓ PGWP Eligible | ✓ Research Opportunities</p>
+                </div>
+
+                <div class="institution-card">
+                    <div class="institution-name">University of Victoria</div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Location:</strong> Victoria, BC</p>
+                    <div class="program-details">
+                        <strong>Restoration of Natural Systems Program</strong>
+                        <p>Duration: Various (Certificate to MSc) | Cost: Varies</p>
+                        <p>Pacific coastal ecosystem focus. Collaboration with Hakai Institute.</p>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--success);">✓ Multiple Pathways | ✓ Marine Focus</p>
+                </div>
+
+                <div class="institution-card">
+                    <div class="institution-name">Fleming College</div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Location:</strong> Lindsay, ON</p>
+                    <div class="program-details">
+                        <strong>Ecosystem Management Technology</strong>
+                        <p>Duration: 3 years (Advanced Diploma) | Cost: ~$16,000/year</p>
+                        <p>Practical field skills, GIS, and restoration project management.</p>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--success);">✓ PGWP Eligible | ✓ Placement Assistance</p>
+                </div>
+
+                <div class="institution-card">
+                    <div class="institution-name">University of Waterloo</div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Location:</strong> Waterloo, ON</p>
+                    <div class="program-details">
+                        <strong>Wetland Restoration Graduate Specialization</strong>
+                        <p>Duration: Added to MSc programs | Cost: Within program fees</p>
+                        <p>Specialization within environmental science/biology graduate programs. Wetland focus.</p>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--success);">✓ Research Excellence | ✓ Great Lakes Access</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: #e8f5e9; border-radius: 8px; border-left: 4px solid var(--success);">
+                <h3 style="color: var(--success); margin-bottom: 0.8rem;">Post-Graduation Work Permit (PGWP) Advantage</h3>
+                <p>International students who complete eligible programs at designated learning institutions can apply for a PGWP allowing them to work in Canada for up to 3 years. This provides a direct pathway to permanent residence through Canadian Experience Class (CEC) or Provincial Nominee Programs after gaining Canadian restoration work experience.</p>
+            </div>
+        </div>
+
+        <!-- Professional Designations -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Professional Designation Pathways</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Designation</th>
+                        <th>Issuing Body</th>
+                        <th>Requirements</th>
+                        <th>Timeline</th>
+                        <th>Provincial Recognition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>CERP</strong><br>Certified Ecological Restoration Practitioner</td>
+                        <td>Society for Ecological Restoration (SER)</td>
+                        <td>• Bachelor's + 5 years experience, OR Master's + 3 years<br>• Portfolio review<br>• Exam</td>
+                        <td>6-12 months</td>
+                        <td>International recognition (not regulatory)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EP</strong><br>Environmental Professional</td>
+                        <td>ECO Canada</td>
+                        <td>• Credential assessment<br>• 2 years experience<br>• Professional references<br>• Code of ethics</td>
+                        <td>3-6 months</td>
+                        <td>All provinces (voluntary)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P.Ag.</strong><br>Professional Agrologist</td>
+                        <td>Provincial Agrologists (varies)</td>
+                        <td>• Agriculture degree<br>• 2-4 years experience<br>• Provincial exam<br>• Mentorship</td>
+                        <td>2-4 years</td>
+                        <td>All provinces (regulated, reciprocal)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RPF</strong><br>Registered Professional Forester</td>
+                        <td>Provincial Forestry Bodies</td>
+                        <td>• Forestry degree<br>• 2-5 years experience<br>• Provincial exam<br>• Ethics review</td>
+                        <td>2-5 years</td>
+                        <td>Most provinces (regulated)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P.Biol.</strong><br>Professional Biologist</td>
+                        <td>College of Applied Biology (BC, AB only)</td>
+                        <td>• Biology degree<br>• 2 years experience<br>• Provincial exam<br>• Mentorship</td>
+                        <td>2-3 years</td>
+                        <td>BC and Alberta only (regulated)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: #fff3cd; border-radius: 8px; border-left: 4px solid var(--warning);">
+                <h3 style="color: #856404; margin-bottom: 0.8rem;">Regulatory vs Voluntary Designations</h3>
+                <p><strong>Regulated professions</strong> (P.Ag., RPF, P.Biol.) legally require registration to practice in certain contexts. Process can take 2-5 years with Canadian experience requirements. <strong>Voluntary designations</strong> (CERP, EP) enhance credibility but aren't legally required. International applicants should prioritize voluntary designations while working toward regulated status through Canadian experience accumulation.</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Continue Framework Development</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='07_monitoring_system.html'" style="width: auto;">Project Monitoring System →</button>
+                <button class="btn btn-primary" onclick="window.location.href='08_implementation_roadmap.html'" style="width: auto;">Implementation Roadmap →</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🛡️ Credential Verification & Quality Assurance</h3>
+            <p>All credential assessments must be conducted through designated organizations (WES, IQAS, or equivalent) to prevent fraud. Educational institutions listed must maintain Designated Learning Institution (DLI) status. No program may guarantee immigration outcomes - success depends on meeting federal and provincial requirements. Applicants have the right to appeal credential assessment decisions through established processes. This tool provides guidance only; official assessments must come from authorized bodies.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize skills matrix
+        const skills = [
+            'Wetland Restoration',
+            'Forest Restoration',
+            'Grassland Restoration',
+            'Watershed Management',
+            'Soil Health Assessment',
+            'Biodiversity Monitoring',
+            'GIS & Remote Sensing',
+            'Project Management',
+            'Stakeholder Engagement',
+            'Indigenous Partnership',
+            'Carbon Accounting',
+            'Adaptive Management'
+        ];
+
+        function initializeSkillsMatrix() {
+            const container = document.getElementById('skills-matrix');
+            container.innerHTML = '';
+
+            skills.forEach((skill, index) => {
+                const card = document.createElement('div');
+                card.className = 'skill-card';
+                card.innerHTML = `
+                    <div class="skill-name">${skill}</div>
+                    <select id="skill-${index}" class="skill-level" style="width: 100%; padding: 0.5rem; margin-top: 0.8rem; border: 2px solid var(--accent); border-radius: 6px; font-size: 1rem;">
+                        <option value="0">Select Level</option>
+                        <option value="1">1 - Beginner</option>
+                        <option value="2">2 - Novice</option>
+                        <option value="3">3 - Intermediate</option>
+                        <option value="4">4 - Advanced</option>
+                        <option value="5">5 - Expert</option>
+                    </select>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function assessCredentials() {
+            const country = document.getElementById('country').value;
+            const credType = document.getElementById('credential-type').value;
+            const field = document.getElementById('field').value;
+            const workExp = parseInt(document.getElementById('work-exp').value) || 0;
+
+            if (!country || !credType || !field) {
+                alert('Please complete all fields before assessing credentials.');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('assessment-results');
+            
+            // Determine equivalency
+            let canEquiv = '';
+            let nocLevel = '';
+            let pathway = '';
+            let badgeClass = '';
+
+            if (credType === 'bachelor' || credType === 'master' || credType === 'phd') {
+                canEquiv = credType === 'phd' ? 'Canadian Doctorate Equivalent' : 
+                           credType === 'master' ? 'Canadian Master\'s Equivalent' : 
+                           'Canadian Bachelor\'s Equivalent';
+                nocLevel = 'TEER 1 (21110, 21112)';
+                badgeClass = 'equiv-full';
+                pathway = 'Direct pathway to Federal Skilled Worker program (Express Entry) or PNP TEER 1 streams. Minimum CLB 7 required.';
+            } else if (credType === 'diploma') {
+                canEquiv = 'Canadian College Diploma Equivalent (2-3 years)';
+                nocLevel = 'TEER 2 (22110, 22112, 22113)';
+                badgeClass = 'equiv-full';
+                pathway = 'Eligible for Federal Skilled Trades or PNP TEER 2 streams. Minimum CLB 5 required (more accessible).';
+            } else {
+                canEquiv = 'May require assessment + bridging education';
+                nocLevel = 'TEER 2/3 depending on bridging';
+                badgeClass = 'equiv-bridging';
+                pathway = 'Consider 1-year Graduate Certificate at Niagara College or Fleming College to obtain Canadian credential and PGWP eligibility.';
+            }
+
+            // Experience assessment
+            let expAssessment = '';
+            if (workExp >= 5) {
+                expAssessment = '<strong>Excellent:</strong> 5+ years experience meets CERP requirements and demonstrates strong practical expertise.';
+            } else if (workExp >= 2) {
+                expAssessment = '<strong>Good:</strong> 2-4 years experience meets minimum for most programs. Consider building portfolio.';
+            } else if (workExp >= 1) {
+                expAssessment = '<strong>Developing:</strong> 1-2 years provides foundation. Aim to gain additional experience in Canadian context.';
+            } else {
+                expAssessment = '<strong>Entry Level:</strong> Consider Canadian bridging program with work-integrated learning component.';
+            }
+
+            resultsDiv.innerHTML = `
+                <div class="result-card">
+                    <div class="result-title">Credential Equivalency Assessment</div>
+                    <p style="margin-bottom: 0.8rem;"><strong>Canadian Equivalent:</strong> ${canEquiv}</p>
+                    <span class="equivalency-badge ${badgeClass}">${nocLevel}</span>
+                    <p style="margin-top: 1rem; line-height: 1.7;">${pathway}</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-title">Work Experience Assessment</div>
+                    <p style="line-height: 1.7;">${expAssessment}</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-title">Recommended Next Steps</div>
+                    <div class="pathway-timeline">
+                        <div class="timeline-step">
+                            <div class="step-number">1</div>
+                            <div>
+                                <strong>Official Credential Assessment</strong>
+                                <p>Submit documents to WES or IQAS ($200-300 CAD, 5-7 weeks). Required for immigration applications.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-number">2</div>
+                            <div>
+                                <strong>Language Testing</strong>
+                                <p>Take IELTS General (English) or TEF Canada (French). Target ${nocLevel.includes('TEER 1') ? 'CLB 7' : 'CLB 5'} minimum for your occupation level.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-number">3</div>
+                            <div>
+                                <strong>${workExp < 2 ? 'Canadian Experience via PGWP' : 'Direct Application or Bridging'}</strong>
+                                <p>${workExp < 2 ? 'Enroll in Canadian restoration program to gain PGWP eligibility and Canadian credentials.' : 'Apply directly to PNP restoration stream if job offer secured, or consider short bridging program for Canadian credential advantage.'}</p>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-number">4</div>
+                            <div>
+                                <strong>Voluntary Designation</strong>
+                                <p>Pursue ECO Canada EP or SER CERP designation while building Canadian experience. Enhances competitiveness.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function analyzeSkills() {
+            const levels = [];
+            let incomplete = false;
+
+            skills.forEach((skill, index) => {
+                const level = parseInt(document.getElementById(`skill-${index}`).value);
+                if (level === 0) {
+                    incomplete = true;
+                }
+                levels.push(level);
+            });
+
+            if (incomplete) {
+                alert('Please rate your competency level for all skills before analyzing.');
+                return;
+            }
+
+            const avg = levels.reduce((a, b) => a + b, 0) / levels.length;
+            const weak = skills.filter((s, i) => levels[i] <= 2);
+            const strong = skills.filter((s, i) => levels[i] >= 4);
+
+            const resultDiv = document.getElementById('skills-gap-result');
+            resultDiv.style.display = 'block';
+            
+            let recommendation = '';
+            if (avg >= 4) {
+                recommendation = 'You demonstrate <strong>expert-level competency</strong> across restoration domains. You\'re well-positioned for CERP certification and senior restoration roles.';
+            } else if (avg >= 3) {
+                recommendation = 'You have <strong>solid intermediate skills</strong>. Focus on developing expertise in weak areas through targeted training or Canadian work experience.';
+            } else {
+                recommendation = 'You\'re in the <strong>developing practitioner</strong> range. A Canadian bridging program would provide comprehensive skills upgrading and credential advantage.';
+            }
+
+            resultDiv.innerHTML = `
+                <div class="result-card">
+                    <div class="result-title">Skills Gap Analysis Results</div>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                        <strong>Average Competency Level:</strong> <span style="font-size: 1.5rem; color: var(--primary);">${avg.toFixed(1)}/5.0</span>
+                    </p>
+                    <p style="line-height: 1.7; margin-bottom: 1rem;">${recommendation}</p>
+
+                    ${strong.length > 0 ? `
+                    <div style="margin: 1.5rem 0;">
+                        <strong style="color: var(--success);">Strong Areas (Level 4-5):</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            ${strong.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Highlight these competencies in your application and portfolio.</p>
+                    </div>
+                    ` : ''}
+
+                    ${weak.length > 0 ? `
+                    <div style="margin: 1.5rem 0;">
+                        <strong style="color: var(--warning);">Development Areas (Level 1-2):</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            ${weak.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary);">Seek training, mentorship, or work experience to strengthen these skills.</p>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initializeSkillsMatrix);
+
+        console.log('%c🎓 Skills Assessment & Credential Recognition', 'color: #0A3D62; font-size: 18px; font-weight: bold;');
+        console.log('%cInteractive tools for credential mapping and skills gap analysis', 'color: #4A4A4A; font-size: 12px;');
+    </script>
+</body>
+</html>
