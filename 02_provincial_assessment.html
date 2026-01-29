@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provincial Restoration Needs Assessment | Canadian Restoration Visa</title>
+    <meta name="description" content="Interactive assessment tool for provincial restoration priorities and workforce capacity">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --highlight: #82CCE3;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --border: #E0E0E0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 24px rgba(0,0,0,0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .tool-section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--background);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(76, 161, 175, 0.1);
+        }
+
+        .province-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .province-card {
+            background: linear-gradient(135deg, var(--surface) 0%, #F8F9FA 100%);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .province-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--secondary) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .province-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .province-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .province-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .province-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .readiness-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .readiness-high {
+            background: rgba(45, 106, 79, 0.15);
+            color: var(--success);
+        }
+
+        .readiness-medium {
+            background: rgba(76, 161, 175, 0.15);
+            color: var(--accent);
+        }
+
+        .readiness-developing {
+            background: rgba(130, 204, 227, 0.15);
+            color: var(--secondary);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.7rem 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .priority-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .priority-tag {
+            padding: 0.3rem 0.7rem;
+            background: rgba(76, 161, 175, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .comparison-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(76, 161, 175, 0.05);
+        }
+
+        .chart-container {
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            min-height: 400px;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .detail-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .close-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            border: none;
+            background: none;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .province-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / Provincial Needs Assessment
+            </div>
+            <h1>🗺️ Provincial Restoration Needs Assessment Tool</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">Interactive analysis of restoration workforce requirements, priorities, and implementation readiness across Canadian provinces and territories</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Filter Controls -->
+        <div class="tool-section">
+            <h2 style="margin-bottom: 1.5rem;">Filter & Compare Jurisdictions</h2>
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label for="readiness-filter">Implementation Readiness</label>
+                    <select id="readiness-filter">
+                        <option value="all">All Levels</option>
+                        <option value="high">High (Pilot Phase)</option>
+                        <option value="medium">Medium-High (Phase 2)</option>
+                        <option value="developing">Developing Capacity</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="priority-filter">Restoration Priority</label>
+                    <select id="priority-filter">
+                        <option value="all">All Priorities</option>
+                        <option value="wildfire">Wildfire Recovery</option>
+                        <option value="watershed">Watershed Management</option>
+                        <option value="soil">Soil Health</option>
+                        <option value="indigenous">Indigenous-Led</option>
+                        <option value="marine">Marine/Coastal</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="workforce-filter">Min. Workforce Need</label>
+                    <input type="number" id="workforce-filter" placeholder="e.g., 10000" min="0">
+                </div>
+                <div class="filter-group" style="display: flex; align-items: flex-end;">
+                    <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Province Cards Grid -->
+        <div class="tool-section">
+            <h2 style="margin-bottom: 1.5rem;">Provincial & Territorial Profiles</h2>
+            <div class="province-grid" id="province-grid">
+                <!-- Cards will be dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Comparative Analysis -->
+        <div class="tool-section">
+            <h2 style="margin-bottom: 1.5rem;">Comparative Workforce Analysis</h2>
+            <div class="chart-container">
+                <div class="chart-title">Environmental Workforce Requirements by Province (2024-2033)</div>
+                <canvas id="workforce-comparison-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Detailed Comparison Table -->
+        <div class="tool-section">
+            <h2 style="margin-bottom: 1.5rem;">Detailed Provincial Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Province/Territory</th>
+                        <th>Current Workforce</th>
+                        <th>Net Hires Needed</th>
+                        <th>% of National Need</th>
+                        <th>Top Priority</th>
+                        <th>Readiness</th>
+                    </tr>
+                </thead>
+                <tbody id="comparison-tbody">
+                    <!-- Rows will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Restoration Domain Analysis -->
+        <div class="tool-section">
+            <h2 style="margin-bottom: 1.5rem;">Restoration Domain Distribution</h2>
+            <p style="margin-bottom: 1.5rem;">National priorities vary by region. Understanding domain-specific needs enables targeted recruitment and skills matching.</p>
+            <div class="chart-container">
+                <div class="chart-title">Primary Restoration Domains by Province</div>
+                <canvas id="domain-distribution-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="tool-section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Next Steps in Framework Development</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='03_economic_calculator.html'">Economic Impact Calculator →</button>
+                <button class="btn btn-secondary" onclick="window.location.href='04_indigenous_framework.html'">Indigenous Partnership Framework →</button>
+                <button class="btn btn-secondary" onclick="window.location.href='05_immigration_designer.html'">Immigration Pathway Designer →</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div class="detail-modal" id="detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🛡️ Zero Harm & Anti-Coercion Principles</h3>
+            <p>This assessment tool uses publicly available government data and research findings. No personal or confidential information is collected. All recommendations require Free, Prior and Informed Consent from Indigenous nations when work occurs on Indigenous territories. Provincial data is indicative and requires validation through local consultation.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Provincial Data (based on research)
+        const provincialData = [
+            {
+                name: 'Ontario',
+                readiness: 'high',
+                currentWorkforce: 500250,
+                netHiresNeeded: 168600,
+                priorities: ['Great Lakes Restoration', 'Soil Health', 'Urban Forestry', 'Wetland Recovery'],
+                topPriority: 'Great Lakes restoration (40% phosphorus reduction target)',
+                details: 'Largest environmental workforce. Critical Great Lakes phosphorus reduction mandate. 82% of farmland shows declining soil organic matter. Strong settlement infrastructure and credential recognition capacity.',
+                indigenousPartnership: 'Multiple First Nations with Great Lakes stewardship traditions. Ongoing treaty rights negotiations. Urban Indigenous populations in Toronto and Ottawa.',
+                economicContext: 'Southern Ontario wetlands provide $4.2B annual filtration services. Agricultural transition support needed for 52,000 farms.',
+                domain: 'watershed'
+            },
+            {
+                name: 'British Columbia',
+                readiness: 'high',
+                currentWorkforce: 196420,
+                netHiresNeeded: 81970,
+                priorities: ['Wildfire Recovery', 'Old-Growth Transition', 'Salmon Habitat', 'Urban Forest'],
+                topPriority: 'Post-wildfire landscape restoration (2023 record season)',
+                details: '2023 worst fire season on record nationally (15M hectares). Old-growth transition management requires workforce scaling. Fraser Basin salmon habitat critical.',
+                indigenousPartnership: 'Great Bear Rainforest model demonstrates success: 1,253 permanent jobs created (960+ Indigenous). Strong IPCA development. 203 First Nations across province.',
+                economicContext: 'Forest sector transition creates retraining opportunities. Carbon credit market development through IFM protocols.',
+                domain: 'wildfire'
+            },
+            {
+                name: 'Alberta',
+                readiness: 'medium',
+                currentWorkforce: 168950,
+                netHiresNeeded: 59010,
+                priorities: ['Energy Transition', 'Grassland Restoration', 'Soil Carbon', 'Wetland Conservation'],
+                topPriority: 'Energy sector workforce transition to restoration',
+                details: 'Clean energy jobs growing 10% annually. Oil/gas extraction shows -1,640 expansion demand. Historic prairie grasslands critically declined. Soil salinization widespread.',
+                indigenousPartnership: '48 First Nations and 8 Métis settlements. Treaty 6, 7, 8 territories. Growing Indigenous environmental sector participation.',
+                economicContext: 'Significant retraining infrastructure from energy sector. High wages ($100K+ median for ecologists) support retention.',
+                domain: 'soil'
+            },
+            {
+                name: 'Manitoba',
+                readiness: 'high',
+                currentWorkforce: 42250,
+                netHiresNeeded: 20410,
+                priorities: ['Lake Winnipeg Restoration', 'Wetlands', 'Prairie Grassland', 'Agricultural Transition'],
+                topPriority: 'Lake Winnipeg eutrophication (50% phosphorus reduction)',
+                details: 'Lake Winnipeg requires 50% phosphorus reduction below pre-1990 levels. Extensive wetland drainage requires reversal. Prairie grassland minimal protection.',
+                indigenousPartnership: '63 First Nations communities. Strong land stewardship traditions. Treaty 1, 2, 3, 4, 5 territories.',
+                economicContext: 'RCIP participant (Brandon). Agricultural transition support programs. Lower cost of living supports workforce retention.',
+                domain: 'watershed'
+            },
+            {
+                name: 'Quebec',
+                readiness: 'medium',
+                currentWorkforce: 245380,
+                netHiresNeeded: 82140,
+                priorities: ['Boreal Forest', 'St. Lawrence Restoration', 'Urban Green Infrastructure', 'Peatland Conservation'],
+                topPriority: 'St. Lawrence River ecosystem restoration',
+                details: 'Second-largest provincial workforce. St. Lawrence restoration ongoing since 1988. Boreal forest management transitions. Francophone workforce requirement.',
+                indigenousPartnership: '11 First Nations. Inuit communities in Nunavik. James Bay Cree agreements provide co-management models.',
+                economicContext: 'Strong forestry sector infrastructure. Francophone immigration advantage. Montreal/Quebec City settlement capacity.',
+                domain: 'marine'
+            },
+            {
+                name: 'Saskatchewan',
+                readiness: 'medium',
+                currentWorkforce: 34890,
+                netHiresNeeded: 15320,
+                priorities: ['Grassland Restoration', 'Soil Health', 'Wetland Conservation', 'Agricultural Transition'],
+                topPriority: 'Prairie grassland ecosystem recovery',
+                details: 'Historic prairie grasslands dramatically declined. Agricultural soil salinization extensive. Potash mining reclamation needs. Small but growing environmental workforce.',
+                indigenousPartnership: '74 First Nations. Treaty 2, 4, 5, 6, 8, 10 territories. Growing Guardian program interest.',
+                economicContext: 'Agricultural economy transition opportunity. Regina and Saskatoon settlement infrastructure. Potash sector environmental expertise.',
+                domain: 'soil'
+            },
+            {
+                name: 'Nova Scotia',
+                readiness: 'medium',
+                currentWorkforce: 28440,
+                netHiresNeeded: 11780,
+                priorities: ['Marine/Coastal', 'Forest Recovery', 'Wetland Restoration', 'Offshore Wind Integration'],
+                topPriority: 'Coastal ecosystem restoration and resilience',
+                details: 'Atlantic Immigration Program success model (94% retention). Marine ecosystem expertise. Forest recovery from pests and storms. Offshore wind development integration.',
+                indigenousPartnership: "Mi'kmaq Nation with extensive marine stewardship. Coastal co-management agreements.",
+                economicContext: 'Fisheries sector transition. Halifax settlement hub. Marine research infrastructure (Bedford Institute).',
+                domain: 'marine'
+            },
+            {
+                name: 'New Brunswick',
+                readiness: 'medium',
+                currentWorkforce: 23190,
+                netHiresNeeded: 9560,
+                priorities: ['Forest Restoration', 'Marine/Coastal', 'Wetland Conservation', 'Urban Green Infrastructure'],
+                topPriority: 'Acadian forest ecosystem recovery',
+                details: 'Acadian forest ecosystem unique. Bay of Fundy marine restoration. Wetland loss reversal needed. Bilingual workforce advantage.',
+                indigenousPartnership: "Wolastoqiyik, Mi'kmaq, and Peskotomuhkati Nations. Growing Indigenous forestry sector.",
+                economicContext: 'Forest sector transition. Moncton and Fredericton settlement. Atlantic Immigration participant.',
+                domain: 'wildfire'
+            },
+            {
+                name: 'Northwest Territories',
+                readiness: 'high',
+                currentWorkforce: 8240,
+                netHiresNeeded: 3160,
+                priorities: ['IPCA Expansion', 'Permafrost Monitoring', 'Indigenous-Led Conservation', 'Climate Adaptation'],
+                topPriority: 'Indigenous Protected and Conserved Areas (IPCAs)',
+                details: '3 federally recognized terrestrial IPCAs (Edéhzhíe, Thaidene Nëné, Ts\'udé Nilįné Tuyeta). Permafrost thaw costs $51M annually. Guardian program leadership.',
+                indigenousPartnership: 'Indigenous majority population. Dene, Inuvialuit, Métis governments. Nation-to-nation governance models established.',
+                economicContext: 'Guardian programs return $2.50-$3.70 per dollar invested. Federal IPCA funding sustained.',
+                domain: 'indigenous'
+            },
+            {
+                name: 'Newfoundland & Labrador',
+                readiness: 'developing',
+                currentWorkforce: 15670,
+                netHiresNeeded: 6420,
+                priorities: ['Marine/Coastal', 'Forest Recovery', 'Peatland Conservation', 'Offshore Wind'],
+                topPriority: 'Marine ecosystem restoration',
+                details: 'Extensive coastline restoration needs. Peatland carbon stores protection. Forest recovery from spruce budworm. Offshore wind workforce development.',
+                indigenousPartnership: 'Innu, Inuit, Mi\'kmaq Nations. Marine co-management emerging.',
+                economicContext: 'Fisheries sector expertise. St. John\'s settlement infrastructure. Atlantic Immigration participant.',
+                domain: 'marine'
+            },
+            {
+                name: 'Yukon',
+                readiness: 'developing',
+                currentWorkforce: 4820,
+                netHiresNeeded: 1840,
+                priorities: ['Permafrost Adaptation', 'Indigenous-Led', 'Wildlife Habitat', 'Mining Reclamation'],
+                topPriority: 'Climate adaptation and Indigenous stewardship',
+                details: 'Permafrost changes accelerating. Mining reclamation legacy. Wildlife corridor protection. Small workforce but high Indigenous participation.',
+                indigenousPartnership: '14 First Nations. Self-government agreements. Strong land stewardship traditions.',
+                economicContext: 'Mining sector environmental expertise. Whitehorse settlement capacity. Federal northern housing support.',
+                domain: 'indigenous'
+            },
+            {
+                name: 'Nunavut',
+                readiness: 'developing',
+                currentWorkforce: 2140,
+                netHiresNeeded: 820,
+                priorities: ['Indigenous-Led Conservation', 'Marine Protection', 'Climate Adaptation', 'Traditional Knowledge Integration'],
+                topPriority: 'Inuit-led marine and terrestrial conservation',
+                details: 'Lowest environmental workforce share (4%). Continuous permafrost throughout. Marine protection expanding. Traditional knowledge essential.',
+                indigenousPartnership: 'Inuit majority. Nunavut Land Claims Agreement. Inuit Qaujimajatuqangit integration required.',
+                economicContext: 'Highest costs but federal support. Iqaluit and regional centers. Inuit employment priorities.',
+                domain: 'indigenous'
+            }
+        ];
+
+        // Initialize page
+        function initializePage() {
+            renderProvinceCards(provincialData);
+            renderComparisonTable(provincialData);
+            renderWorkforceChart();
+            renderDomainChart();
+        }
+
+        // Render province cards
+        function renderProvinceCards(data) {
+            const grid = document.getElementById('province-grid');
+            grid.innerHTML = '';
+
+            data.forEach(province => {
+                const card = document.createElement('div');
+                card.className = 'province-card';
+                card.onclick = () => showProvinceDetail(province);
+
+                const readinessClass = `readiness-${province.readiness}`;
+                const readinessText = province.readiness === 'high' ? 'High Priority' : 
+                                     province.readiness === 'medium' ? 'Medium-High' : 'Developing';
+
+                card.innerHTML = `
+                    <div class="province-header">
+                        <div class="province-name">${province.name}</div>
+                        <div class="readiness-badge ${readinessClass}">${readinessText}</div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Current Workforce</span>
+                        <span class="stat-value">${province.currentWorkforce.toLocaleString()}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Net Hires Needed (2024-2033)</span>
+                        <span class="stat-value">${province.netHiresNeeded.toLocaleString()}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">% of National Need</span>
+                        <span class="stat-value">${((province.netHiresNeeded / 480510) * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="priority-tags">
+                        ${province.priorities.slice(0, 3).map(p => `<span class="priority-tag">${p}</span>`).join('')}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Render comparison table
+        function renderComparisonTable(data) {
+            const tbody = document.getElementById('comparison-tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(province => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td><strong>${province.name}</strong></td>
+                    <td>${province.currentWorkforce.toLocaleString()}</td>
+                    <td>${province.netHiresNeeded.toLocaleString()}</td>
+                    <td>${((province.netHiresNeeded / 480510) * 100).toFixed(1)}%</td>
+                    <td>${province.topPriority}</td>
+                    <td><span class="readiness-badge readiness-${province.readiness}">${province.readiness === 'high' ? '🟢 High' : province.readiness === 'medium' ? '🟡 Medium' : '🔵 Developing'}</span></td>
+                `;
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const readiness = document.getElementById('readiness-filter').value;
+            const priority = document.getElementById('priority-filter').value;
+            const minWorkforce = parseInt(document.getElementById('workforce-filter').value) || 0;
+
+            let filtered = provincialData.filter(province => {
+                if (readiness !== 'all' && province.readiness !== readiness) return false;
+                if (priority !== 'all' && province.domain !== priority) return false;
+                if (province.netHiresNeeded < minWorkforce) return false;
+                return true;
+            });
+
+            renderProvinceCards(filtered);
+            renderComparisonTable(filtered);
+        }
+
+        // Show province detail modal
+        function showProvinceDetail(province) {
+            const modal = document.getElementById('detail-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            modalTitle.textContent = province.name + ' - Detailed Assessment';
+            modalBody.innerHTML = `
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Workforce Requirements</h3>
+                    <p><strong>Current Environmental Workforce:</strong> ${province.currentWorkforce.toLocaleString()}</p>
+                    <p><strong>Net Hires Needed (2024-2033):</strong> ${province.netHiresNeeded.toLocaleString()}</p>
+                    <p><strong>Percentage of National Need:</strong> ${((province.netHiresNeeded / 480510) * 100).toFixed(2)}%</p>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Top Priority</h3>
+                    <p>${province.topPriority}</p>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Restoration Priorities</h3>
+                    <div class="priority-tags">
+                        ${province.priorities.map(p => `<span class="priority-tag">${p}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Context & Details</h3>
+                    <p style="line-height: 1.8;">${province.details}</p>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Indigenous Partnership Context</h3>
+                    <p style="line-height: 1.8;">${province.indigenousPartnership}</p>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Economic Context</h3>
+                    <p style="line-height: 1.8;">${province.economicContext}</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--border);">
+                    <p style="font-weight: 600; color: var(--primary);">Implementation Readiness: <span class="readiness-badge readiness-${province.readiness}">${province.readiness === 'high' ? 'High - Pilot Phase Priority' : province.readiness === 'medium' ? 'Medium-High - Phase 2' : 'Developing Capacity'}</span></p>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('detail-modal').classList.remove('active');
+        }
+
+        // Close modal on background click
+        document.getElementById('detail-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Render workforce comparison chart
+        function renderWorkforceChart() {
+            const canvas = document.getElementById('workforce-comparison-chart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.parentElement.clientWidth;
+            const height = 400;
+            canvas.width = width;
+            canvas.height = height;
+
+            const sorted = [...provincialData].sort((a, b) => b.netHiresNeeded - a.netHiresNeeded).slice(0, 10);
+            
+            const padding = { top: 40, right: 40, bottom: 120, left: 100 };
+            const chartWidth = width - padding.left - padding.right;
+            const chartHeight = height - padding.top - padding.bottom;
+            const maxValue = Math.max(...sorted.map(p => p.netHiresNeeded));
+            const barWidth = chartWidth / sorted.length;
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw bars
+            sorted.forEach((province, i) => {
+                const barHeight = (province.netHiresNeeded / maxValue) * chartHeight;
+                const x = padding.left + i * barWidth + barWidth * 0.1;
+                const y = padding.top + chartHeight - barHeight;
+                const w = barWidth * 0.8;
+
+                const gradient = ctx.createLinearGradient(x, y, x, y + barHeight);
+                gradient.addColorStop(0, '#4CA1AF');
+                gradient.addColorStop(1, '#0A3D62');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, w, barHeight);
+
+                // Value labels
+                ctx.fillStyle = '#1A1A1A';
+                ctx.font = 'bold 11px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.fillText((province.netHiresNeeded / 1000).toFixed(0) + 'K', x + w / 2, y - 5);
+
+                // Province names (rotated)
+                ctx.save();
+                ctx.translate(x + w / 2, height - padding.bottom + 10);
+                ctx.rotate(-Math.PI / 4);
+                ctx.fillStyle = '#4A4A4A';
+                ctx.font = '12px Segoe UI';
+                ctx.textAlign = 'right';
+                ctx.fillText(province.name, 0, 0);
+                ctx.restore();
+            });
+
+            // Y-axis
+            ctx.strokeStyle = '#E0E0E0';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = padding.top + (chartHeight / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(width - padding.right, y);
+                ctx.stroke();
+
+                const value = maxValue - (maxValue / 5) * i;
+                ctx.fillStyle = '#4A4A4A';
+                ctx.font = '11px Segoe UI';
+                ctx.textAlign = 'right';
+                ctx.fillText((value / 1000).toFixed(0) + 'K', padding.left - 10, y + 4);
+            }
+
+            // Title
+            ctx.fillStyle = '#0A3D62';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.textAlign = 'left';
+            ctx.fillText('Net Environmental Hires Needed (2024-2033)', padding.left, 25);
+        }
+
+        // Render domain distribution chart
+        function renderDomainChart() {
+            const canvas = document.getElementById('domain-distribution-chart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.parentElement.clientWidth;
+            const height = 300;
+            canvas.width = width;
+            canvas.height = height;
+
+            const domains = {};
+            provincialData.forEach(p => {
+                domains[p.domain] = (domains[p.domain] || 0) + 1;
+            });
+
+            const domainLabels = {
+                'watershed': 'Watershed Management',
+                'wildfire': 'Wildfire Recovery',
+                'soil': 'Soil Health & Restoration',
+                'indigenous': 'Indigenous-Led Conservation',
+                'marine': 'Marine & Coastal'
+            };
+
+            const colors = {
+                'watershed': '#4CA1AF',
+                'wildfire': '#E76F51',
+                'soil': '#2D6A4F',
+                'indigenous': '#82CCE3',
+                'marine': '#1B6B93'
+            };
+
+            const total = Object.values(domains).reduce((a, b) => a + b, 0);
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(width, height) / 3;
+
+            let currentAngle = -Math.PI / 2;
+
+            Object.entries(domains).forEach(([domain, count]) => {
+                const sliceAngle = (count / total) * Math.PI * 2;
+                
+                ctx.fillStyle = colors[domain];
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fill();
+
+                // Labels
+                const midAngle = currentAngle + sliceAngle / 2;
+                const labelX = centerX + Math.cos(midAngle) * (radius + 40);
+                const labelY = centerY + Math.sin(midAngle) * (radius + 40);
+
+                ctx.fillStyle = '#1A1A1A';
+                ctx.font = 'bold 12px Segoe UI';
+                ctx.textAlign = labelX > centerX ? 'left' : 'right';
+                ctx.fillText(domainLabels[domain], labelX, labelY);
+                
+                ctx.font = '11px Segoe UI';
+                ctx.fillText(`${count} provinces (${((count/total)*100).toFixed(0)}%)`, labelX, labelY + 15);
+
+                currentAngle += sliceAngle;
+            });
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', initializePage);
+        window.addEventListener('resize', () => {
+            renderWorkforceChart();
+            renderDomainChart();
+        });
+    </script>
+</body>
+</html>

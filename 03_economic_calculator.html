@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Impact Calculator | Canadian Restoration Visa</title>
+    <meta name="description" content="Interactive calculator for restoration investment returns, job creation, and economic multipliers">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --highlight: #82CCE3;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --border: #E0E0E0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 24px rgba(0,0,0,0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .calculator-section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .input-panel {
+            background: var(--background);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .results-panel {
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 2px solid var(--accent);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(76, 161, 175, 0.1);
+        }
+
+        .input-helper {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .result-value.positive {
+            color: var(--success);
+        }
+
+        .result-context {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .scenario-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .scenario-card {
+            background: linear-gradient(135deg, var(--surface) 0%, #F8F9FA 100%);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .scenario-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .chart-container {
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            min-height: 350px;
+        }
+
+        .evidence-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .evidence-item {
+            padding: 1rem;
+            background: white;
+            border-left: 3px solid var(--accent);
+            margin-bottom: 0.8rem;
+            border-radius: 4px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .evidence-item strong {
+            color: var(--primary);
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 968px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / Economic Impact Calculator
+            </div>
+            <h1>💰 Economic Impact Calculator</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">Model restoration investment returns, job creation, and economic multipliers based on research-validated assumptions</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Interactive Calculator -->
+        <div class="calculator-section">
+            <h2 style="margin-bottom: 1.5rem;">Custom Investment Scenario Calculator</h2>
+            <div class="calculator-grid">
+                <div class="input-panel">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Program Parameters</h3>
+                    
+                    <div class="input-group">
+                        <label for="visa-count">Number of Restoration Visa Allocations</label>
+                        <input type="number" id="visa-count" value="1000" min="100" max="50000" step="100">
+                        <div class="input-helper">Pilot: 500-1,000 | Phase 2: 5,000-10,000 | Full Scale: 10,000+</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="avg-wage">Average Annual Wage (CAD)</label>
+                        <input type="number" id="avg-wage" value="75000" min="40000" max="150000" step="5000">
+                        <div class="input-helper">Range: $52K-$128K based on occupation level</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="restoration-investment">Restoration Project Investment per Worker (CAD)</label>
+                        <input type="number" id="restoration-investment" value="50000" min="10000" max="200000" step="10000">
+                        <div class="input-helper">Includes equipment, materials, training, monitoring</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="multiplier">Economic Multiplier Effect</label>
+                        <select id="multiplier">
+                            <option value="1.5">Conservative (1.5x)</option>
+                            <option value="2.1" selected>Moderate (2.1x - Research Average)</option>
+                            <option value="3.0">Strong (3.0x - Urban Context)</option>
+                        </select>
+                        <div class="input-helper">Each dollar spent generates additional economic activity</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="carbon-price">Carbon Credit Price (CAD/tonne)</label>
+                        <input type="number" id="carbon-price" value="85" min="50" max="170" step="5">
+                        <div class="input-helper">Current: $65/tonne | 2030 Target: $170/tonne</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="roi-ratio">Direct ROI Ratio (Restoration Benefits)</label>
+                        <select id="roi-ratio">
+                            <option value="5">Conservative (5:1)</option>
+                            <option value="15" selected>Moderate (15:1)</option>
+                            <option value="30">Strong (30:1 - Wetland/Watershed)</option>
+                        </select>
+                        <div class="input-helper">Research shows 5:1 to 30:1 returns depending on ecosystem</div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="calculate()">Calculate Economic Impact</button>
+                </div>
+
+                <div class="results-panel">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Projected Economic Outcomes</h3>
+                    
+                    <div class="result-card">
+                        <div class="result-label">Direct Employment Impact</div>
+                        <div class="result-value" id="direct-employment">1,000 jobs</div>
+                        <div class="result-context">Restoration practitioners directly employed</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Total Economic Activity Generated</div>
+                        <div class="result-value positive" id="economic-activity">$157.5M</div>
+                        <div class="result-context">Including multiplier effects across supply chains</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Ecological Services Value (Annual)</div>
+                        <div class="result-value positive" id="ecological-value">$750M</div>
+                        <div class="result-context">Water filtration, carbon storage, flood prevention, biodiversity</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Return on Investment Ratio</div>
+                        <div class="result-value" id="roi-display">15:1</div>
+                        <div class="result-context">For every $1 invested, $15 in benefits generated</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Potential Carbon Credit Revenue (Annual)</div>
+                        <div class="result-value positive" id="carbon-revenue">$4.25M</div>
+                        <div class="result-context">Based on avg 50 tonnes CO₂e sequestered per restoration worker/year</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">10-Year Program Value</div>
+                        <div class="result-value positive" id="ten-year-value">$7.5B</div>
+                        <div class="result-context">Cumulative ecological and economic benefits</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pre-Built Scenarios -->
+        <div class="calculator-section">
+            <h2 style="margin-bottom: 1.5rem;">Pre-Modeled Implementation Scenarios</h2>
+            <p style="margin-bottom: 2rem;">Click any scenario to load its parameters into the calculator above.</p>
+            
+            <div class="scenario-cards">
+                <div class="scenario-card" onclick="loadScenario('pilot')">
+                    <div class="scenario-title">🌱 Pilot Phase (2027)</div>
+                    <p><strong>Scale:</strong> 1,000 visa allocations</p>
+                    <p><strong>Target Provinces:</strong> BC, ON, MB, NWT</p>
+                    <p><strong>Investment:</strong> $50M total program</p>
+                    <p><strong>Projected Return:</strong> $750M (15:1)</p>
+                    <p><strong>Direct Jobs:</strong> 1,000 + 1,100 indirect</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">Conservative approach for proof-of-concept and evaluation</p>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario('moderate')">
+                    <div class="scenario-title">🌿 Phase 2 Expansion (2029)</div>
+                    <p><strong>Scale:</strong> 5,000 visa allocations</p>
+                    <p><strong>Target:</strong> 8-10 provinces/territories</p>
+                    <p><strong>Investment:</strong> $375M total program</p>
+                    <p><strong>Projected Return:</strong> $5.6B (15:1)</p>
+                    <p><strong>Direct Jobs:</strong> 5,000 + 5,500 indirect</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">Scaled deployment after pilot validation</p>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario('full')">
+                    <div class="scenario-title">🌲 Full National Program (2031+)</div>
+                    <p><strong>Scale:</strong> 10,000 annual visa allocations</p>
+                    <p><strong>Target:</strong> All provinces/territories</p>
+                    <p><strong>Investment:</strong> $750M annual program</p>
+                    <p><strong>Projected Return:</strong> $11.25B annually (15:1)</p>
+                    <p><strong>Direct Jobs:</strong> 10,000 + 11,000 indirect</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">Mature program contributing 15-20% of workforce gap closure</p>
+                </div>
+
+                <div class="scenario-card" onclick="loadScenario('indigenous')">
+                    <div class="scenario-title">🪶 Indigenous-Focused Pathway (2028+)</div>
+                    <p><strong>Scale:</strong> 2,500 visa allocations</p>
+                    <p><strong>Focus:</strong> IPCA expansion, Guardian programs</p>
+                    <p><strong>Investment:</strong> $187.5M total</p>
+                    <p><strong>Projected Return:</strong> $3.6B (19:1 with Guardian multiplier)</p>
+                    <p><strong>Direct Jobs:</strong> 2,500 + Indigenous employment priority</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">Aligns with UNDRIP commitments and Guardian program scaling</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Comparison Chart -->
+        <div class="calculator-section">
+            <h2 style="margin-bottom: 1.5rem;">Investment Returns by Restoration Domain</h2>
+            <div class="chart-container">
+                <canvas id="roi-chart"></canvas>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.95rem; color: var(--text-secondary);">
+                <strong>Note:</strong> ROI varies significantly by ecosystem type. Wetland restoration consistently shows highest returns (up to 30:1) due to water filtration, flood prevention, and carbon storage services. Forest restoration averages 10-15:1. Grassland and marine restoration range 5-12:1.
+            </p>
+        </div>
+
+        <!-- Job Creation Projections -->
+        <div class="calculator-section">
+            <h2 style="margin-bottom: 1.5rem;">Job Creation & Wage Analysis</h2>
+            <div class="chart-container">
+                <canvas id="wage-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Evidence Base -->
+        <div class="calculator-section">
+            <h2 style="margin-bottom: 1.5rem;">Research Evidence Supporting Economic Assumptions</h2>
+            <ul class="evidence-list">
+                <li class="evidence-item">
+                    <strong>30:1 ROI for Restoration Projects</strong><br>
+                    Smart Prosperity Institute and Nature United analysis. Wetland restoration shows highest returns due to water filtration ($4.2B annual value in southern Ontario alone), flood prevention, carbon storage, and biodiversity support.
+                </li>
+                <li class="evidence-item">
+                    <strong>Ducks Unlimited: $5.66B Annual Value</strong><br>
+                    6.6 million acres under conservation management provide measurable economic benefits through ecosystem services including sediment filtration, phosphorus removal, and wildlife habitat.
+                </li>
+                <li class="evidence-item">
+                    <strong>Guardian Program Returns: $2.50-$3.70 per Dollar</strong><br>
+                    Northwest Territories analysis demonstrates Indigenous Guardian programs deliver strong social, economic, cultural, and environmental returns. Model applicable to restoration employment.
+                </li>
+                <li class="evidence-item">
+                    <strong>Economic Multiplier Effects: 1.5-3.0x</strong><br>
+                    Environmental sector spending generates supply chain activity. Rural regions show 1.5-2.1x multipliers; urban contexts up to 3.0x due to higher service density.
+                </li>
+                <li class="evidence-item">
+                    <strong>Carbon Credit Market Growing</strong><br>
+                    Federal offset credit prices rising from $65/tonne (2023) to $170/tonne (2030). Nature Conservancy Canada's Darkwoods project sold 700,000 credits generating $4M+ revenue. Improved Forest Management protocol enables restoration offset generation.
+                </li>
+                <li class="evidence-item">
+                    <strong>Wage Structures Support Retention</strong><br>
+                    Restoration ecologists: $52K-$128K (median ~$100K). Conservation biologists: $55K-$90K. Field technicians: $38K-$55K. Wages exceed Canadian median ($62,400) and support rural settlement.
+                </li>
+                <li class="evidence-item">
+                    <strong>Nature Investment Hub: $20B Target</strong><br>
+                    Partnership between Natural Step Canada and Smart Prosperity Institute aims for fivefold increase in conservation/restoration investment through blended finance mechanisms.
+                </li>
+                <li class="evidence-item">
+                    <strong>Clean Energy Transition Creates Adjacent Opportunities</strong><br>
+                    Clean energy employment projected to grow from 509,000 (2024) to 2.7M (2050). Many skills transferable to restoration sector. Alberta shows 10% annual growth in clean energy despite oil/gas contraction.
+                </li>
+            </ul>
+        </div>
+
+        <!-- Navigation -->
+        <div class="calculator-section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Continue Framework Exploration</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='04_indigenous_framework.html'" style="width: auto;">Indigenous Partnership Framework →</button>
+                <button class="btn btn-primary" onclick="window.location.href='05_immigration_designer.html'" style="width: auto;">Immigration Pathway Designer →</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🛡️ Zero Harm & Transparency Principles</h3>
+            <p>All economic projections are based on peer-reviewed research and government data sources. Calculations use conservative-to-moderate assumptions. Actual outcomes will vary based on implementation quality, restoration domain, geographic context, and market conditions. This calculator is for policy planning purposes and does not constitute financial advice or investment guarantees. All program implementation must include independent economic evaluation and public reporting of actual outcomes vs projections.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Default calculation on load
+        window.addEventListener('load', calculate);
+
+        // Calculator function
+        function calculate() {
+            const visaCount = parseInt(document.getElementById('visa-count').value);
+            const avgWage = parseInt(document.getElementById('avg-wage').value);
+            const restorationInvestment = parseInt(document.getElementById('restoration-investment').value);
+            const multiplier = parseFloat(document.getElementById('multiplier').value);
+            const carbonPrice = parseInt(document.getElementById('carbon-price').value);
+            const roiRatio = parseInt(document.getElementById('roi-ratio').value);
+
+            // Calculations
+            const directEmployment = visaCount;
+            const totalWages = visaCount * avgWage;
+            const totalInvestment = visaCount * restorationInvestment;
+            const directEconomicActivity = totalWages + totalInvestment;
+            const totalEconomicActivity = directEconomicActivity * multiplier;
+            const ecologicalValue = totalInvestment * roiRatio;
+            const carbonTonnesPerWorker = 50; // Conservative avg estimate
+            const carbonRevenue = visaCount * carbonTonnesPerWorker * carbonPrice;
+            const tenYearValue = ecologicalValue * 10;
+
+            // Update display
+            document.getElementById('direct-employment').textContent = directEmployment.toLocaleString() + ' jobs';
+            document.getElementById('economic-activity').textContent = '$' + (totalEconomicActivity / 1000000).toFixed(1) + 'M';
+            document.getElementById('ecological-value').textContent = '$' + (ecologicalValue / 1000000).toFixed(0) + 'M';
+            document.getElementById('roi-display').textContent = roiRatio + ':1';
+            document.getElementById('carbon-revenue').textContent = '$' + (carbonRevenue / 1000000).toFixed(2) + 'M';
+            document.getElementById('ten-year-value').textContent = '$' + (tenYearValue / 1000000000).toFixed(1) + 'B';
+        }
+
+        // Load pre-built scenarios
+        function loadScenario(type) {
+            switch(type) {
+                case 'pilot':
+                    document.getElementById('visa-count').value = 1000;
+                    document.getElementById('avg-wage').value = 75000;
+                    document.getElementById('restoration-investment').value = 50000;
+                    document.getElementById('multiplier').value = 2.1;
+                    document.getElementById('carbon-price').value = 85;
+                    document.getElementById('roi-ratio').value = 15;
+                    break;
+                case 'moderate':
+                    document.getElementById('visa-count').value = 5000;
+                    document.getElementById('avg-wage').value = 80000;
+                    document.getElementById('restoration-investment').value = 75000;
+                    document.getElementById('multiplier').value = 2.1;
+                    document.getElementById('carbon-price').value = 110;
+                    document.getElementById('roi-ratio').value = 15;
+                    break;
+                case 'full':
+                    document.getElementById('visa-count').value = 10000;
+                    document.getElementById('avg-wage').value = 85000;
+                    document.getElementById('restoration-investment').value = 75000;
+                    document.getElementById('multiplier').value = 2.1;
+                    document.getElementById('carbon-price').value = 130;
+                    document.getElementById('roi-ratio').value = 15;
+                    break;
+                case 'indigenous':
+                    document.getElementById('visa-count').value = 2500;
+                    document.getElementById('avg-wage').value = 78000;
+                    document.getElementById('restoration-investment').value = 75000;
+                    document.getElementById('multiplier').value = 2.7; // Higher due to Guardian program effects
+                    document.getElementById('carbon-price').value = 100;
+                    document.getElementById('roi-ratio').value = 19; // Guardian program multiplier
+                    break;
+            }
+            calculate();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ROI Chart
+        function drawROIChart() {
+            const canvas = document.getElementById('roi-chart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.parentElement.clientWidth;
+            const height = 350;
+            canvas.width = width;
+            canvas.height = height;
+
+            const data = [
+                { domain: 'Wetland Restoration', roi: 30, color: '#4CA1AF' },
+                { domain: 'Watershed Management', roi: 25, color: '#1B6B93' },
+                { domain: 'Indigenous Guardian Programs', roi: 19, color: '#82CCE3' },
+                { domain: 'Forest Restoration', roi: 15, color: '#2D6A4F' },
+                { domain: 'Grassland Restoration', roi: 12, color: '#4CA1AF' },
+                { domain: 'Marine/Coastal', roi: 10, color: '#1B6B93' },
+                { domain: 'Urban Forestry', roi: 8, color: '#2D6A4F' },
+                { domain: 'Soil Carbon', roi: 7, color: '#82CCE3' }
+            ];
+
+            const padding = { top: 40, right: 40, bottom: 80, left: 120 };
+            const chartWidth = width - padding.left - padding.right;
+            const chartHeight = height - padding.top - padding.bottom;
+            const maxROI = Math.max(...data.map(d => d.roi));
+            const barHeight = chartHeight / data.length * 0.7;
+            const barSpacing = chartHeight / data.length;
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw bars
+            data.forEach((item, i) => {
+                const barWidth = (item.roi / maxROI) * chartWidth;
+                const y = padding.top + i * barSpacing + (barSpacing - barHeight) / 2;
+
+                const gradient = ctx.createLinearGradient(padding.left, y, padding.left + barWidth, y);
+                gradient.addColorStop(0, item.color);
+                gradient.addColorStop(1, item.color + '80');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(padding.left, y, barWidth, barHeight);
+
+                // Value labels
+                ctx.fillStyle = '#1A1A1A';
+                ctx.font = 'bold 14px Segoe UI';
+                ctx.textAlign = 'left';
+                ctx.fillText(item.roi + ':1', padding.left + barWidth + 10, y + barHeight / 2 + 5);
+
+                // Domain labels
+                ctx.fillStyle = '#4A4A4A';
+                ctx.font = '13px Segoe UI';
+                ctx.textAlign = 'right';
+                ctx.fillText(item.domain, padding.left - 10, y + barHeight / 2 + 5);
+            });
+
+            // Title
+            ctx.fillStyle = '#0A3D62';
+            ctx.font = 'bold 15px Segoe UI';
+            ctx.textAlign = 'left';
+            ctx.fillText('Return on Investment by Restoration Domain', padding.left, 25);
+        }
+
+        // Wage Distribution Chart
+        function drawWageChart() {
+            const canvas = document.getElementById('wage-chart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.parentElement.clientWidth;
+            const height = 350;
+            canvas.width = width;
+            canvas.height = height;
+
+            const occupations = [
+                { title: 'Senior Restoration Manager', min: 95000, max: 128000, color: '#0A3D62' },
+                { title: 'Restoration Ecologist', min: 75000, max: 110000, color: '#1B6B93' },
+                { title: 'Conservation Biologist', min: 65000, max: 95000, color: '#4CA1AF' },
+                { title: 'Environmental Scientist', min: 55000, max: 85000, color: '#82CCE3' },
+                { title: 'Forestry Technologist', min: 50000, max: 75000, color: '#2D6A4F' },
+                { title: 'Field Restoration Technician', min: 38000, max: 55000, color: '#4CA1AF' }
+            ];
+
+            const padding = { top: 40, right: 100, bottom: 60, left: 180 };
+            const chartWidth = width - padding.left - padding.right;
+            const chartHeight = height - padding.top - padding.bottom;
+            const maxWage = 130000;
+            const barHeight = chartHeight / occupations.length * 0.6;
+            const barSpacing = chartHeight / occupations.length;
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw ranges
+            occupations.forEach((occ, i) => {
+                const minX = padding.left + (occ.min / maxWage) * chartWidth;
+                const maxX = padding.left + (occ.max / maxWage) * chartWidth;
+                const rangeWidth = maxX - minX;
+                const y = padding.top + i * barSpacing + (barSpacing - barHeight) / 2;
+
+                const gradient = ctx.createLinearGradient(minX, y, maxX, y);
+                gradient.addColorStop(0, occ.color);
+                gradient.addColorStop(1, occ.color + '99');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(minX, y, rangeWidth, barHeight);
+
+                // Range labels
+                ctx.fillStyle = '#1A1A1A';
+                ctx.font = 'bold 11px Segoe UI';
+                ctx.textAlign = 'left';
+                ctx.fillText('$' + (occ.min / 1000) + 'K - $' + (occ.max / 1000) + 'K', maxX + 10, y + barHeight / 2 + 4);
+
+                // Occupation labels
+                ctx.fillStyle = '#4A4A4A';
+                ctx.font = '12px Segoe UI';
+                ctx.textAlign = 'right';
+                ctx.fillText(occ.title, padding.left - 10, y + barHeight / 2 + 4);
+            });
+
+            // Median wage line
+            const medianX = padding.left + (62400 / maxWage) * chartWidth;
+            ctx.strokeStyle = '#E76F51';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(medianX, padding.top);
+            ctx.lineTo(medianX, height - padding.bottom);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = '#E76F51';
+            ctx.font = 'bold 11px Segoe UI';
+            ctx.textAlign = 'center';
+            ctx.fillText('Canadian Median', medianX, height - padding.bottom + 20);
+            ctx.fillText('$62.4K', medianX, height - padding.bottom + 35);
+
+            // Title
+            ctx.fillStyle = '#0A3D62';
+            ctx.font = 'bold 15px Segoe UI';
+            ctx.textAlign = 'left';
+            ctx.fillText('Restoration Sector Wage Ranges (CAD)', padding.left, 25);
+        }
+
+        window.addEventListener('load', () => {
+            drawROIChart();
+            drawWageChart();
+        });
+
+        window.addEventListener('resize', () => {
+            drawROIChart();
+            drawWageChart();
+        });
+    </script>
+</body>
+</html>

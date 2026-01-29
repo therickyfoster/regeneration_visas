@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indigenous Partnership Framework | Canadian Restoration Visa</title>
+    <meta name="description" content="UNDRIP-aligned framework for Indigenous partnership in restoration immigration pathways">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --indigenous: #8B4513;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--indigenous) 0%, #654321 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content { max-width: 1400px; margin: 0 auto; }
+
+        h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+
+        .breadcrumb { font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .breadcrumb a { color: white; text-decoration: underline; }
+
+        main { max-width: 1400px; margin: 2rem auto; padding: 0 2rem 4rem; }
+
+        .section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .principle-card {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFFFFF 100%);
+            border-left: 4px solid var(--indigenous);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
+        }
+
+        .principle-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--indigenous);
+            margin-bottom: 0.8rem;
+        }
+
+        .guardian-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--surface) 0%, #F8F9FA 100%);
+            border: 2px solid var(--indigenous);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(139, 69, 19, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--indigenous);
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .fpic-checklist {
+            background: var(--background);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background: white;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--indigenous);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            cursor: pointer;
+            accent-color: var(--indigenous);
+        }
+
+        .ipca-map {
+            background: linear-gradient(135deg, #E9ECEF 0%, #DEE2E6 100%);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .territory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .territory-card {
+            background: white;
+            border: 2px solid var(--indigenous);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .territory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(139, 69, 19, 0.2);
+            border-color: #654321;
+        }
+
+        .territory-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--indigenous);
+            margin-bottom: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--indigenous) 0%, #654321 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+        }
+
+        footer {
+            background: var(--indigenous);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .guardian-stats, .territory-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / Indigenous Partnership Framework
+            </div>
+            <h1>🪶 Indigenous Partnership Framework</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">UNDRIP-aligned protocols for Indigenous sovereignty, Free Prior Informed Consent, and Guardian program integration in restoration immigration pathways</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- UNDRIP Principles -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">UNDRIP & Bill C-15: Foundational Requirements</h2>
+            <p style="margin-bottom: 1.5rem;">The United Nations Declaration on the Rights of Indigenous Peoples (UNDRIP), implemented through Bill C-15 (2021), provides the legal framework for Indigenous partnership. The 2023 UNDRIP Action Plan contains <strong>181 specific measures</strong> requiring Indigenous engagement on resource projects.</p>
+
+            <div class="principle-card">
+                <div class="principle-title">Article 19: Free, Prior and Informed Consent (FPIC)</div>
+                <p>States shall consult and cooperate in good faith with the Indigenous peoples concerned through their own representative institutions in order to obtain their free, prior and informed consent before adopting and implementing legislative or administrative measures that may affect them.</p>
+                <p style="margin-top: 1rem;"><strong>Application to Restoration Visa:</strong> Any restoration work on Indigenous territories requires nation-to-nation consultation before visa allocation. Indigenous nations have the right to say no.</p>
+            </div>
+
+            <div class="principle-card">
+                <div class="principle-title">Article 26: Rights to Lands, Territories & Resources</div>
+                <p>Indigenous peoples have the right to the lands, territories and resources which they have traditionally owned, occupied or otherwise used or acquired. States shall give legal recognition and protection to these lands, territories and resources.</p>
+                <p style="margin-top: 1rem;"><strong>Application to Restoration Visa:</strong> Land stewardship decisions rest with Indigenous nations. Restoration Visa must support Indigenous-led conservation rather than imposing external priorities.</p>
+            </div>
+
+            <div class="principle-card">
+                <div class="principle-title">Article 32: Development Affecting Lands</div>
+                <p>States shall consult and cooperate in good faith with the Indigenous peoples concerned through their own representative institutions in order to obtain their free and informed consent prior to the approval of any project affecting their lands or territories and other resources.</p>
+                <p style="margin-top: 1rem;"><strong>Application to Restoration Visa:</strong> Restoration projects are development activities requiring consent. Visa workers cannot be deployed to Indigenous territories without nation approval and participation in governance.</p>
+            </div>
+        </div>
+
+        <!-- Guardian Program Integration -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Indigenous Guardian Program Integration</h2>
+            <p style="margin-bottom: 1.5rem;">The Indigenous Guardian program provides the most promising integration pathway. Federal investment has grown from $25M pilot (2017-2022) to <strong>$100M through 2026</strong>, creating nearly <strong>1,500 culturally meaningful jobs</strong> across 240+ initiatives.</p>
+
+            <div class="guardian-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Active Guardian Initiatives</div>
+                    <div class="stat-value">240+</div>
+                    <div class="stat-context">Across Canada</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Jobs Created</div>
+                    <div class="stat-value">1,500</div>
+                    <div class="stat-context">Culturally meaningful employment</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Federal Investment</div>
+                    <div class="stat-value">$100M</div>
+                    <div class="stat-context">Through 2026</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Economic Return</div>
+                    <div class="stat-value">$2.50-$3.70</div>
+                    <div class="stat-context">Per dollar invested (NWT analysis)</div>
+                </div>
+            </div>
+
+            <h3 style="margin: 2rem 0 1rem; color: var(--indigenous);">First Nations National Guardians Network</h3>
+            <p>Launched at COP15 (December 2022) as the world's first Indigenous-led national stewardship network. Now independently manages federal funding allocation, reducing agreement processing from 6 months to 60 days for 90% of cases.</p>
+
+            <div style="margin: 2rem 0; padding: 1.5rem; background: #FFF8F0; border-radius: 8px; border: 2px solid var(--indigenous);">
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">Restoration Visa Integration Model:</p>
+                <p>Partner with the National Guardians Network for program governance. Allocate minimum <strong>25% of visa placements</strong> to Indigenous-led restoration initiatives. Provide training pathways for Guardian programs to employ visa holders under Indigenous supervision. Ensure revenue-sharing from restoration outcomes (carbon credits, ecosystem services valuation) flows to Indigenous communities.</p>
+            </div>
+        </div>
+
+        <!-- FPIC Protocol Checklist -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Free, Prior and Informed Consent Protocol</h2>
+            <p style="margin-bottom: 1.5rem;">This checklist guides policy makers through FPIC requirements before deploying Restoration Visa workers to any Indigenous territory. All steps must be completed with affirmative consent before proceeding.</p>
+
+            <div class="fpic-checklist">
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic1">
+                    <label for="fpic1"><strong>1. Identify Affected Indigenous Nation(s):</strong> Determine which First Nation, Inuit, or Métis government(s) hold jurisdiction over restoration project territory. Consult treaty maps and land claims agreements. Contact Indigenous Services Canada for assistance if uncertain.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic2">
+                    <label for="fpic2"><strong>2. Initial Nation-to-Nation Contact:</strong> Reach out through proper governance channels (Chief and Council for First Nations, Inuit government executives, Métis Nation leadership). Provide written notice of proposed restoration project and visa worker employment in plain language with translation if requested.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic3">
+                    <label for="fpic3"><strong>3. Share Complete Information:</strong> Provide detailed information: project scope, timeline, environmental impacts, employment numbers, wage structures, carbon credit revenue projections, monitoring protocols, and long-term commitments. Information must be accessible and understandable.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic4">
+                    <label for="fpic4"><strong>4. Provide Adequate Time for Review:</strong> Allow minimum 90 days for community consultation process. Indigenous nations may need to hold community meetings, consult Elders, review with legal counsel, and engage traditional knowledge holders. Do not pressure for quick decisions.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic5">
+                    <label for="fpic5"><strong>5. Address Questions and Concerns:</strong> Respond comprehensively to all inquiries. Be prepared to modify project design based on Indigenous feedback. Demonstrate willingness to adapt rather than imposing predetermined plans.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic6">
+                    <label for="fpic6"><strong>6. Negotiate Benefit-Sharing Agreement:</strong> Develop mutually acceptable terms for revenue sharing, employment priority for Indigenous community members, training opportunities, cultural protocols integration, and long-term stewardship arrangements.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic7">
+                    <label for="fpic7"><strong>7. Obtain Formal Consent:</strong> Receive written consent through Indigenous nation's proper decision-making process (Band Council Resolution for First Nations, equivalent for Inuit and Métis governments). Consent must be free (no coercion), prior (before project start), and informed (full information provided).</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic8">
+                    <label for="fpic8"><strong>8. Respect Right to Say No:</strong> If consent is denied, do not proceed with project on that territory. Explore alternative locations or project designs. Indigenous nations have the right to refuse projects even if government deems them beneficial.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic9">
+                    <label for="fpic9"><strong>9. Establish Ongoing Consultation Mechanism:</strong> Create joint decision-making committee with Indigenous representation. Hold regular meetings (quarterly minimum). Provide transparent reporting on project progress, employment outcomes, and ecological results.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="fpic10">
+                    <label for="fpic10"><strong>10. Honor Right to Withdraw Consent:</strong> Recognize that consent can be withdrawn if circumstances change or agreements are breached. Include clear protocols for project suspension or termination if Indigenous nation requests.</label>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="checkFPICCompliance()">Check FPIC Compliance</button>
+            <div id="fpic-result" style="margin-top: 1rem; padding: 1rem; border-radius: 6px; display: none;"></div>
+        </div>
+
+        <!-- IPCAs Framework -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Indigenous Protected and Conserved Areas (IPCAs)</h2>
+            <p style="margin-bottom: 1.5rem;">IPCAs represent the primary pathway for Canada to meet 30x30 biodiversity targets. Three federally recognized terrestrial IPCAs exist (Edéhzhíe, Thaidene Nëné, Ts'udé Nilįné Tuyeta - all in NWT). Federal commitment: <strong>$800M for up to 4 Project Finance for Permanence initiatives</strong>, plus <strong>$1.2B for Indigenous-led conservation since 2018</strong>.</p>
+
+            <div class="ipca-map">
+                <h3 style="color: var(--indigenous); margin-bottom: 1rem;">IPCA Expansion Opportunities</h3>
+                <p style="max-width: 600px; margin: 0 auto 1.5rem;">Restoration Visa can support IPCA expansion by providing restoration workforce capacity under Indigenous governance. Priority regions: Great Bear Rainforest (BC), Qat'muk-Jumbo Valley (BC), Pimachiowin Aki (MB/ON), Thaidene Nëné expansion (NWT), Tallurutiup Imanga (Nunavut marine).</p>
+                <div style="margin-top: 2rem;">
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Interactive GIS mapping tool would display Indigenous territories, existing IPCAs, and proposed conservation areas. For government implementation, integrate with ECCC's Canadian Protected and Conserved Areas Database.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Sovereignty -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Indigenous Data Sovereignty: OCAP® Principles</h2>
+            <p style="margin-bottom: 1.5rem;">The First Nations Information Governance Centre has trademarked OCAP® to prevent misuse. Any data collection related to Indigenous peoples or territories must follow these principles:</p>
+
+            <div class="territory-grid">
+                <div class="territory-card">
+                    <div class="territory-name">Ownership</div>
+                    <p>Indigenous communities own information about their members, lands, and resources. Data belongs to the community that it's about.</p>
+                </div>
+                <div class="territory-card">
+                    <div class="territory-name">Control</div>
+                    <p>Indigenous peoples control all aspects of research and data management processes. This includes collection methods, access, analysis, and disclosure.</p>
+                </div>
+                <div class="territory-card">
+                    <div class="territory-name">Access</div>
+                    <p>Indigenous peoples have the right to access data about themselves and their communities regardless of where it's held.</p>
+                </div>
+                <div class="territory-card">
+                    <div class="territory-name">Possession</div>
+                    <p>While ownership resides with the community, possession refers to stewardship. Physical control of data may be held by Indigenous organizations.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: #FFF8F0; border-radius: 8px; border: 2px solid var(--indigenous);">
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">Restoration Visa Application:</p>
+                <p>Any monitoring data from restoration projects on Indigenous territories must be collected with community consent. Data hosting should preferably occur on Indigenous-controlled servers. Analysis and publication require community approval. Carbon credit revenues derived from data belong to Indigenous communities.</p>
+            </div>
+        </div>
+
+        <!-- Case Studies -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Successful Indigenous-Led Conservation Models</h2>
+            
+            <div class="principle-card">
+                <div class="principle-title">Great Bear Rainforest, British Columbia</div>
+                <p><strong>Scale:</strong> 6.4 million hectares (64,000 km²) coastal temperate rainforest</p>
+                <p><strong>Governance:</strong> Co-management between BC government and 26 First Nations through Coast Funds</p>
+                <p><strong>Employment Impact:</strong> 1,253 permanent jobs created (960+ held by First Nation community members), 123 local businesses established/expanded, $444M attracted to coastal economies over 15 years</p>
+                <p><strong>Lessons for Restoration Visa:</strong> Long-term funding commitment enables permanent employment. Revenue-sharing through carbon credits and conservation finance creates sustainable funding. First Nations leadership in all decisions essential.</p>
+            </div>
+
+            <div class="principle-card">
+                <div class="principle-title">Thaidene Nëné, Northwest Territories</div>
+                <p><strong>Scale:</strong> 26,376 km² Indigenous Protected Area</p>
+                <p><strong>Governance:</strong> Łutsël K'é Dene First Nation co-management with Parks Canada and GNWT</p>
+                <p><strong>Employment:</strong> Guardian program employs community members for monitoring, patrol, cultural education, and visitor services</p>
+                <p><strong>Lessons for Restoration Visa:</strong> Nation-to-nation negotiations took 40 years - respect timeline. Parks Canada staff work under Dene oversight. Traditional knowledge integrated into all management decisions.</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Continue Framework Development</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='05_immigration_designer.html'">Immigration Pathway Designer →</button>
+                <button class="btn btn-primary" onclick="window.location.href='06_skills_credential.html'">Skills & Credential Recognition →</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🛡️ Indigenous Rights & Zero Harm Principles</h3>
+            <p><strong>Critical Requirement:</strong> Implementation of Restoration Visa on Indigenous territories without Free, Prior and Informed Consent violates UNDRIP, Bill C-15, and Canada's international commitments. This framework is mandatory, not optional. Indigenous nations have the right to refuse projects. Data sovereignty (OCAP® principles) must be respected. Revenue from restoration work on Indigenous territories must benefit Indigenous communities. Any violation of these principles constitutes harm and must be prevented through robust safeguards and independent Indigenous oversight.</p>
+        </div>
+    </footer>
+
+    <script>
+        function checkFPICCompliance() {
+            const checkboxes = document.querySelectorAll('.fpic-checklist input[type="checkbox"]');
+            const total = checkboxes.length;
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const result = document.getElementById('fpic-result');
+            
+            result.style.display = 'block';
+            
+            if (checked === total) {
+                result.style.background = '#d4edda';
+                result.style.border = '2px solid #28a745';
+                result.style.color = '#155724';
+                result.innerHTML = '<strong>✓ FPIC Compliance Achieved</strong><br>All 10 requirements met. You may proceed with Indigenous partnership engagement. Remember: consent must be documented formally through Indigenous nation\'s governance process, and this checklist serves as preparation, not replacement, for actual nation-to-nation negotiation.';
+            } else {
+                result.style.background = '#f8d7da';
+                result.style.border = '2px solid #dc3545';
+                result.style.color = '#721c24';
+                result.innerHTML = `<strong>✗ FPIC Incomplete</strong><br>Completed ${checked} of ${total} requirements. All steps must be fulfilled before proceeding. Missing requirements may constitute UNDRIP violations and legal liability. Review unchecked items and ensure full compliance before any restoration work begins on Indigenous territories.`;
+            }
+        }
+
+        // Log to console
+        console.log('%c🪶 Indigenous Partnership Framework', 'color: #8B4513; font-size: 18px; font-weight: bold;');
+        console.log('%cThis framework is built on UNDRIP (Bill C-15) requirements and Indigenous-led conservation models.', 'color: #4A4A4A; font-size: 12px;');
+        console.log('%cFPIC protocols are mandatory for any work on Indigenous territories.', 'color: #4A4A4A; font-size: 12px;');
+    </script>
+</body>
+</html>

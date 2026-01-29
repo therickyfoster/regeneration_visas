@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immigration Pathway Designer | Canadian Restoration Visa</title>
+    <meta name="description" content="Interactive tool for designing PNP streams and Express Entry pathways for restoration occupations">
+    <style>
+        :root {
+            --primary: #0A3D62;
+            --secondary: #1B6B93;
+            --accent: #4CA1AF;
+            --success: #2D6A4F;
+            --warning: #E76F51;
+            --background: #F8F9FA;
+            --surface: #FFFFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content { max-width: 1400px; margin: 0 auto; }
+        h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .breadcrumb { font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem; }
+        .breadcrumb a { color: white; text-decoration: underline; }
+
+        main { max-width: 1400px; margin: 2rem auto; padding: 0 2rem 4rem; }
+
+        .section {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .pathway-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .pathway-card {
+            background: linear-gradient(135deg, var(--surface) 0%, #F8F9FA 100%);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pathway-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(76, 161, 175, 0.3);
+        }
+
+        .pathway-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin: 1.5rem 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(76, 161, 175, 0.1);
+        }
+
+        .requirements-list {
+            background: var(--background);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.8rem;
+            background: white;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .requirement-item::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 61, 98, 0.3);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 10px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .timeline-content {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.2rem;
+        }
+
+        .noc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+        }
+
+        .noc-table thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .noc-table th, .noc-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .noc-table tbody tr:hover {
+            background: rgba(76, 161, 175, 0.05);
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .zero-harm-notice {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .pathway-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="01_executive_dashboard.html">← Executive Dashboard</a> / Immigration Pathway Designer
+            </div>
+            <h1>🛂 Immigration Pathway Designer</h1>
+            <p style="margin-top: 0.5rem; opacity: 0.95;">Interactive tool for configuring Provincial Nominee Program streams and Express Entry pathways for restoration occupations</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Pathway Options -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Primary Immigration Pathways</h2>
+            <p style="margin-bottom: 1.5rem;">The Restoration Visa can be implemented through multiple existing immigration pathways. Each has distinct processing times, requirements, and retention characteristics.</p>
+
+            <div class="pathway-grid">
+                <div class="pathway-card" onclick="showPathway('pnp')">
+                    <div class="pathway-title">Provincial Nominee Program (PNP)</div>
+                    <p><strong>Processing:</strong> 6-18 months (varies by province)</p>
+                    <p><strong>Annual Allocation:</strong> 55,000 spaces (2025-2027)</p>
+                    <p><strong>CRS Bonus:</strong> 600 points (virtually guarantees ITA)</p>
+                    <p><strong>Retention:</strong> 85-94% in rural programs</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">✓ Recommended primary pathway - provincial control, employer-driven, proven retention</p>
+                </div>
+
+                <div class="pathway-card" onclick="showPathway('ee')">
+                    <div class="pathway-title">Express Entry Category-Based</div>
+                    <p><strong>Processing:</strong> 6 months average</p>
+                    <p><strong>CRS Cutoff:</strong> Typically 470-500 for categories</p>
+                    <p><strong>Annual Invitations:</strong> Unlimited within overall targets</p>
+                    <p><strong>Retention:</strong> 60-70% typical for EE</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">✓ Fast processing but lower rural retention without settlement support</p>
+                </div>
+
+                <div class="pathway-card" onclick="showPathway('rcip')">
+                    <div class="pathway-title">Rural Community Immigration Pilot</div>
+                    <p><strong>Processing:</strong> 12-15 months</p>
+                    <p><strong>Communities:</strong> 14 participating (Brandon, Trail, etc.)</p>
+                    <p><strong>Endorsement Required:</strong> Community recommendation</p>
+                    <p><strong>Retention:</strong> 87% (predecessor RNIP)</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">✓ Strongest rural retention - community integration model</p>
+                </div>
+
+                <div class="pathway-card" onclick="showPathway('atlantic')">
+                    <div class="pathway-title">Atlantic Immigration Model</div>
+                    <p><strong>Processing:</strong> 6-12 months</p>
+                    <p><strong>Provinces:</strong> NB, NS, PE, NL</p>
+                    <p><strong>Settlement Services:</strong> Included for temp workers</p>
+                    <p><strong>Retention:</strong> 94% first-year</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">✓ Proven model - adapt for restoration sector nationally</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOC Occupation Mapping -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">National Occupational Classification (NOC) Mapping</h2>
+            <p style="margin-bottom: 1.5rem;">Restoration occupations span TEER 1 (university degree required) and TEER 2 (college diploma), enabling both high-skilled professionals and field practitioners to qualify.</p>
+
+            <table class="noc-table">
+                <thead>
+                    <tr>
+                        <th>NOC Code</th>
+                        <th>Occupation Title</th>
+                        <th>TEER Level</th>
+                        <th>Education Requirement</th>
+                        <th>Min. CLB</th>
+                        <th>EE Eligible</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>21110</strong></td>
+                        <td>Biologists & Related Scientists</td>
+                        <td>TEER 1</td>
+                        <td>Bachelor's degree (Biology, Ecology)</td>
+                        <td>CLB 7</td>
+                        <td>✓ Yes (FSW)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>21112</strong></td>
+                        <td>Agricultural & Environmental Scientists</td>
+                        <td>TEER 1</td>
+                        <td>Bachelor's degree</td>
+                        <td>CLB 7</td>
+                        <td>✓ Yes (FSW)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>22110</strong></td>
+                        <td>Biological Technicians</td>
+                        <td>TEER 2</td>
+                        <td>2-3 year college diploma</td>
+                        <td>CLB 5</td>
+                        <td>✓ Yes (FST)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>22112</strong></td>
+                        <td>Forestry Technologists</td>
+                        <td>TEER 2</td>
+                        <td>2-3 year college diploma</td>
+                        <td>CLB 5</td>
+                        <td>✓ Yes (FST)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>22113</strong></td>
+                        <td>Conservation & Fishery Officers</td>
+                        <td>TEER 2</td>
+                        <td>2-3 year college diploma</td>
+                        <td>CLB 5</td>
+                        <td>✓ Yes (FST)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>82030</strong></td>
+                        <td>Silviculture & Forestry Workers</td>
+                        <td>TEER 3</td>
+                        <td>High school + training</td>
+                        <td>CLB 4-5</td>
+                        <td>Limited (CEC)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 1.5rem; padding: 1.2rem; background: #e8f5e9; border-radius: 8px; border-left: 4px solid var(--success);">
+                <p><strong>Strategic Advantage:</strong> TEER 2 occupations require only CLB 5 (vs CLB 7 for TEER 1), significantly expanding the eligible international talent pool. This lower language threshold is appropriate for field-based restoration work while maintaining quality standards.</p>
+            </div>
+        </div>
+
+        <!-- Language Requirements Calculator -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Language Requirements Calculator</h2>
+            <p style="margin-bottom: 1.5rem;">Canadian Language Benchmarks (CLB) determine eligibility. Calculate minimum requirements based on occupation and pathway.</p>
+
+            <div class="form-group">
+                <label for="occ-level">Occupation TEER Level</label>
+                <select id="occ-level" onchange="calculateLanguage()">
+                    <option value="">Select TEER Level</option>
+                    <option value="1">TEER 1 (University Degree)</option>
+                    <option value="2">TEER 2 (College Diploma)</option>
+                    <option value="3">TEER 3 (High School + Training)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pathway-type">Immigration Pathway</label>
+                <select id="pathway-type" onchange="calculateLanguage()">
+                    <option value="">Select Pathway</option>
+                    <option value="ee-fsw">Express Entry - Federal Skilled Worker</option>
+                    <option value="ee-fst">Express Entry - Federal Skilled Trades</option>
+                    <option value="pnp">Provincial Nominee Program</option>
+                    <option value="rcip">Rural Community Immigration Pilot</option>
+                </select>
+            </div>
+
+            <div id="language-result" style="display: none; padding: 1.5rem; background: var(--background); border-radius: 8px; margin-top: 1.5rem;"></div>
+        </div>
+
+        <!-- Processing Timeline -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Typical Processing Timeline (PNP Stream)</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <strong>Month 0-1: Provincial Nomination Application</strong>
+                        <p>Applicant submits to provincial program. Requires job offer from designated restoration employer, credential assessment, language test results, and demonstration of restoration experience/education.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <strong>Month 2-4: Provincial Assessment</strong>
+                        <p>Province reviews application against stream criteria. May request additional documentation. Strong applications with employer support typically approved within 2-3 months.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <strong>Month 4-5: Nomination Certificate Issued</strong>
+                        <p>Upon approval, province issues nomination certificate. Applicant receives 600 CRS points in Express Entry pool, virtually guaranteeing Invitation to Apply (ITA) in next draw.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <strong>Month 5-6: Express Entry ITA</strong>
+                        <p>Applicant receives ITA from IRCC. Must submit complete permanent residence application within 60 days. Includes medical exam, police certificates, proof of funds.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <strong>Month 6-12: Federal Processing</strong>
+                        <p>IRCC processes PR application. PNP applications receive priority processing (6-month service standard for complete applications). Background checks, document verification.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <strong>Month 12-14: Permanent Residence Granted</strong>
+                        <p>Applicant receives Confirmation of Permanent Residence (COPR). Must land in Canada within validity period (typically 1 year). Upon landing, becomes permanent resident with full settlement service access.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding: 1.2rem; background: #fff3cd; border-radius: 8px; border-left: 4px solid var(--warning);">
+                <p><strong>Expedited Processing Opportunity:</strong> IRCC's Digital Platform Modernization ($827.3M over 5 years) aims to reduce processing times. Restoration Visa could be designated priority stream, targeting 4-6 month federal processing similar to Express Entry service standards.</p>
+            </div>
+        </div>
+
+        <!-- Provincial Program Configuration -->
+        <div class="section">
+            <h2 style="margin-bottom: 1.5rem;">Provincial Stream Design Template</h2>
+            <p style="margin-bottom: 1.5rem;">Provinces can configure their restoration stream using these parameters. All must align with federal IRCC requirements while allowing provincial customization.</p>
+
+            <div class="requirements-list">
+                <h3 style="margin-bottom: 1rem; color: var(--primary);">Mandatory Federal Requirements</h3>
+                <div class="requirement-item">Valid job offer from designated restoration employer (minimum 1 year full-time)</div>
+                <div class="requirement-item">Educational credential assessment showing equivalency to Canadian standards</div>
+                <div class="requirement-item">Language test results meeting minimum CLB thresholds for NOC</div>
+                <div class="requirement-item">Sufficient settlement funds (unless working in Canada on valid permit)</div>
+                <div class="requirement-item">Admissibility (no criminal inadmissibility, medical inadmissibility)</div>
+                <div class="requirement-item">Intent to reside in nominating province</div>
+            </div>
+
+            <div class="requirements-list">
+                <h3 style="margin-bottom: 1rem; color: var(--primary);">Provincial Customization Options</h3>
+                <div class="requirement-item">Specific restoration domain priorities (e.g., wildfire recovery for BC, watershed for MB)</div>
+                <div class="requirement-item">Regional distribution requirements (rural vs urban placement)</div>
+                <div class="requirement-item">Indigenous partnership requirements (FPIC compliance, Guardian program integration)</div>
+                <div class="requirement-item">Carbon credit revenue-sharing mandates</div>
+                <div class="requirement-item">Monitoring and reporting protocols (SER standards, remote sensing verification)</div>
+                <div class="requirement-item">Settlement service commitments from employers</div>
+                <div class="requirement-item">Points-based ranking system within stream (if application volume exceeds allocation)</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section" style="text-align: center;">
+            <h3 style="margin-bottom: 1.5rem;">Continue Framework Development</h3>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='06_skills_credential.html'">Skills & Credential Recognition →</button>
+                <button class="btn btn-primary" onclick="window.location.href='07_monitoring_system.html'">Monitoring & Verification →</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Government of Canada • Planetary Restoration Archive Partnership</p>
+        <div class="zero-harm-notice">
+            <h3>🛡️ Immigration Integrity & Worker Protection</h3>
+            <p>All immigration pathways must include robust worker protections: (1) Labor standards enforcement preventing exploitation, (2) Transparent wage disclosure requirements, (3) Rights education provided in applicant's language, (4) Independent complaint mechanisms without immigration consequences for workers reporting violations, (5) Employer sanctions for non-compliance including designation removal, (6) Settlement service access from arrival regardless of immigration status. Immigration fraud prevention through employer verification, credential authentication, and outcome monitoring.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showPathway(type) {
+            alert(`Detailed ${type.toUpperCase()} pathway information would open in a modal or separate section. Implementation note: Create interactive pathway comparison tool with eligibility checker, document checklist, and timeline calculator.`);
+        }
+
+        function calculateLanguage() {
+            const tierLevel = document.getElementById('occ-level').value;
+            const pathway = document.getElementById('pathway-type').value;
+            const result = document.getElementById('language-result');
+
+            if (!tierLevel || !pathway) {
+                result.style.display = 'none';
+                return;
+            }
+
+            result.style.display = 'block';
+            let clbReq = '';
+            let details = '';
+
+            if (pathway === 'ee-fsw' && tierLevel === '1') {
+                clbReq = 'CLB 7 minimum in all four abilities (Reading, Writing, Listening, Speaking)';
+                details = 'Federal Skilled Worker requires CLB 7 for TEER 1 occupations. Equivalent to IELTS 6.0 overall. CELPIP-General also accepted.';
+            } else if (pathway === 'ee-fst' && tierLevel === '2') {
+                clbReq = 'CLB 5 for Speaking & Listening, CLB 4 for Reading & Writing';
+                details = 'Federal Skilled Trades has lower requirements. Most TEER 2 restoration occupations qualify. Equivalent to IELTS 5.0-5.5.';
+            } else if (pathway === 'pnp') {
+                if (tierLevel === '1') {
+                    clbReq = 'CLB 7 recommended (some provinces may accept CLB 5-6)';
+                    details = 'Provincial programs have flexibility. Check specific provincial stream requirements.';
+                } else if (tierLevel === '2') {
+                    clbReq = 'CLB 5 minimum (typical for TEER 2)';
+                    details = 'Most provinces accept CLB 5 for TEER 2 occupations. Alberta and BC often require CLB 4-5.';
+                }
+            } else if (pathway === 'rcip') {
+                clbReq = 'CLB 4 minimum (CLB 5 recommended for TEER 2)';
+                details = 'Rural Community pilot has most flexible language requirements. Community endorsement can compensate for lower scores.';
+            }
+
+            result.innerHTML = `
+                <h4 style="color: var(--primary); margin-bottom: 0.8rem;">Language Requirement Result</h4>
+                <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">${clbReq}</p>
+                <p style="color: var(--text-secondary);">${details}</p>
+                <div style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 6px;">
+                    <strong>Test Options:</strong> IELTS General Training, CELPIP-General (English) or TEF Canada, TCF Canada (French)
+                </div>
+            `;
+        }
+
+        console.log('%c🛂 Immigration Pathway Designer', 'color: #0A3D62; font-size: 18px; font-weight: bold;');
+        console.log('%cConfigure PNP streams and Express Entry pathways for restoration occupations', 'color: #4A4A4A; font-size: 12px;');
+    </script>
+</body>
+</html>
